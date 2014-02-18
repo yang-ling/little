@@ -64,9 +64,49 @@ def getAttachment(attachmentFilePath):
   attachment.add_header('Content-Disposition', 'attachment',   filename=os.path.basename(attachmentFilePath))
   return attachment
 
-if len(sys.argv) == 2:
-  sendMail('convert','convert',str(sys.argv[1]))
-elif len(sys.argv) == 3 and str(sys.argv[2]) == '-n':
-  sendMail(' ',' ',str(sys.argv[1]))
+def clearKindleFolder(*kindleFolderFiles):
+  if len(kindleFolderFiles) == 0:
+    print('No file to clear')
+    return
+  for onefile in kindleFolderFiles:
+    os.remove(onefile)
+    print('%s is deleted' % onefile)
+
+kindleFileFolder = '/home/yangling/Documents/Kindle/'
+checksum_files = []
+for theFile in os.listdir(kindleFileFolder):
+  print(theFile)
+  fullpath = os.path.join(kindleFileFolder, theFile)
+  print(fullpath)
+  if os.path.isfile(fullpath):
+    checksum_files += [fullpath]
+print(','.join(checksum_files))
+if len(sys.argv) == 1:
+  # No argument, load file from kindlefilefolder
+  if len(checksum_files) == 0:
+    print('There is no file in %s' % kindleFileFolder)
+  else:
+    sendMail('convert','convert',*checksum_files)
+    clearKindleFolder(*checksum_files)
+elif len(sys.argv) == 2:
+  # The argument is either "-n" or file path
+  if str(sys.argv[1]) == '-n':
+    #load file from kindlefilefolder, but not convert
+    if len(checksum_files) == 0:
+      print('There is no file in %s' % kindleFileFolder)
+    else:
+      sendMail(' ',' ',*checksum_files)
+      clearKindleFolder(*checksum_files)
+  else:
+    # the argument is file path
+    sendMail('convert','convert',str(sys.argv[1]))
+elif len(sys.argv) == 3:
+  # the argument is file path and "-n"
+  if str(sys.argv[1]) == '-n':
+    sendMail(' ',' ',str(sys.argv[2]))
+  elif str(sys.argv[2]) == '-n':
+    sendMail(' ',' ',str(sys.argv[1]))
+  else:
+    print('Invalid argument.')
 else:
   print('Invalid argument. You must specify a file. Append "-n" if you dont want convert')
