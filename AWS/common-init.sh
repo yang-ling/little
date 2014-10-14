@@ -6,6 +6,11 @@
 
 set -e -x
 
+# Wrap this in a function
+# because if directly call this install.sh it will ask for password
+# But the prompt disappear very quickly and if you don't input password
+# The whole script will be breaked.
+# So I wrap it here to omit the error.
 function installOhMyZsh()
 {
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
@@ -27,7 +32,9 @@ fi
 # === PPA Section Start ===
 
 # Add PPA for git
-sudo add-apt-repository ppa:git-core/ppa
+if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
+    sudo add-apt-repository ppa:git-core/ppa
+fi
 
 # === PPA Section end ===
 
