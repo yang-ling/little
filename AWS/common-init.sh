@@ -5,7 +5,6 @@
 # Usage: ssh to the server and execute this command
 
 set -e -x
-
 # Wrap this in a function
 # because if directly call this install.sh it will ask for password
 # But the prompt disappear very quickly and if you don't input password
@@ -51,11 +50,17 @@ git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/vimrc-server -O ~/.vimrc
 
 # Config zsh and oh-my-zsh
-installOhMyZsh
+# Ignore errors
+installOhMyZsh || true
+if [ ! -d ~/.oh-my-zsh ]; then
+    echo "oh-my-zsh install failed."
+    echo "You need run this script again"
+    exit 1
+fi
 chsh -s `which zsh`
 wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/zshrc-server -O ~/.zshrc
 mkdir -p ~/.oh-my-zsh/custom/plugins
 wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/oh-my-zsh/custom/plugins/common-aliases.plugin.zsh -O ~/.oh-my-zsh/custom/plugins/common-aliases.plugin.zsh
 
 sudo shutdown -r 0
-
+exit 0

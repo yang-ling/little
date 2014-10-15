@@ -14,6 +14,7 @@ if [ ! -f ~/.vim/bundle/neobundle.vim ]; then
         read response
         if [ "$response" != "n" ]; then
             bash common-init.sh
+            exit 0
         fi
     else
         echo "And common-init.sh is not in the same folder"
