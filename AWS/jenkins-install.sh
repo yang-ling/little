@@ -7,7 +7,7 @@ set -e -x
 
 # Check whether common-init.sh has executed.
 echo "Checking whether common-init.sh executed..."
-if [ ! -f ~/.vim/bundle/neobundle.vim ]; then
+if [ ! -d ~/.vim/bundle/neobundle.vim ]; then
     echo "It seems you haven't executed common-init.sh"
     if [ -f ./common-init.sh ]; then
         echo -n "common-init.sh is found. Do you want to execute it? [Y/n]"
@@ -61,7 +61,7 @@ fi
 echo "Creating jenkins config file..."
 echo -n "Please input your DNS or IP: "
 read response_dns
-cat > "jenkins" << EOF
+sudo cat > "jenkins" << EOF
 sudo cat > jenkins
 upstream app_server {
 server 127.0.0.1:8080 fail_timeout=0;
