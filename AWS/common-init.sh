@@ -4,7 +4,6 @@
 # For Ubuntu Server
 # Usage: ssh to the server and execute this command
 
-set -e -x
 # Wrap this in a function
 # because if directly call this install.sh it will ask for password
 # But the prompt disappear very quickly and if you don't input password
@@ -31,17 +30,28 @@ fi
 # === PPA Section Start ===
 
 # Add PPA for git
+echo "Checking whether git PPA exists..."
 if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
+    echo "Add git PPA..."
     sudo add-apt-repository ppa:git-core/ppa
+    echo "git PPA added."
 fi
+echo "Check finished."
 
 # === PPA Section end ===
 
+echo "Update system..."
 sudo aptitude update -y
+echo "System updated"
+
+echo "Upgrade system..."
 sudo aptitude upgrade -y
+echo "System upgraded."
 
 # Installation
+echo "Install git zsh ..."
 sudo aptitude install -y git zsh
+echo "Packages installed"
 
 # Config vim
 rm -rf ~/.vim/bundle

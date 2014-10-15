@@ -3,8 +3,6 @@
 # Install jenkins on Ubuntu Server
 # Please run common-init.sh first
 
-set -e -x
-
 # Check whether common-init.sh has executed.
 echo "Checking whether common-init.sh executed..."
 if [ ! -d ~/.vim/bundle/neobundle.vim ]; then
@@ -27,14 +25,16 @@ else
     echo "Check OK."
 fi
 
-# Check whether jenkins installed.
+echo "Check whether jenkins installed..."
 if dpkg -s "jenkins" >/dev/null 2>&1; then
     echo "Jenkins is already installed."
     echo -n "Do you want to update it? [Y/n]"
     read response2
     if [ "$response2" != "n" ]; then
+        echo "Jenkins update start..."
         sudo apt-get update
         sudo apt-get -y install jenkins
+        echo "Jenkins updated."
     fi
 else
     echo "Install jenkins..."
@@ -83,5 +83,12 @@ if (!-f \$request_filename) {
     }
 }
 EOF
+echo "Jenkins config file created"
+
+echo "Create symbol link: /etc/nginx/sites-available/jenkins => /etc/nginx/sites-enabled/"
 sudo ln -sf /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
+echo "Symbol link created."
+
+echo "Restart nginx..."
 sudo service nginx restart
+echo "Nginx restarted."
