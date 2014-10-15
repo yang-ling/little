@@ -36,14 +36,14 @@ if dpkg -s "jenkins" >/dev/null 2>&1; then
         sudo apt-get update
         sudo apt-get -y install jenkins
     fi
-    exit 0
+else
+    echo "Install jenkins..."
+    wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+    sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo apt-get update
+    sudo apt-get -y install jenkins
+    echo "Jenkins installed."
 fi
-echo "Install jenkins..."
-wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
-sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-sudo apt-get update
-sudo apt-get -y install jenkins
-echo "Jenkins installed."
 
 # Install nginx
 echo "Install Nginx..."
@@ -54,15 +54,14 @@ cd /etc/nginx/sites-available
 sudo rm -f default ../sites-enabled/default
 if [ -f "jenkins" ]; then
     echo "jenkins config file aready exists!"
-    echo "Jenkins setup finished!"
-    exit 0
+    echo "Make backup: jenkins.bak"
+    sudo mv jenkins jenkins.bak
 fi
 # Jenkins nginx config file
 echo "Creating jenkins config file..."
 echo -n "Please input your DNS or IP: "
 read response_dns
-sudo cat > "jenkins" << EOF
-sudo cat > jenkins
+sudo tee jenkins > /dev/null << EOF
 upstream app_server {
 server 127.0.0.1:8080 fail_timeout=0;
 }
@@ -84,5 +83,5 @@ if (!-f \$request_filename) {
     }
 }
 EOF
-sudo ln -s /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
 sudo service nginx restart
