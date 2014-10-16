@@ -209,7 +209,8 @@ EOF
 # Install jenkins on Ubuntu Server
 function jenkinsInstall()
 {
-    echo "Jenkins installation start..."
+    echo -e "\n"
+    echo "Jenkins Server installation start..."
     if ! isCommonInstalled; then
         commonInstall
     fi
@@ -221,15 +222,34 @@ function jenkinsInstall()
     sudo rm -f default ../sites-enabled/default
     configureJenkins
 
-    echo "Jenkins installation finished."
+    echo "Jenkins Server installation finished."
+    echo -e "\n"
 }
 
-if [ "$SHELL" != "$(which zsh)" ]; then
-    echo "Your shell is not zsh."
-    echo "You need reboot to make installation take effect."
-    echo -n "Reboot now? [y/N]"
-    read response
-    [[ $response == "y" ]] && sudo shutdown -r 0
-fi
+function ending()
+{
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        echo "Your shell is not zsh."
+        echo "You need reboot to make installation take effect."
+        echo -n "Reboot now? [y/N]"
+        read response
+        [[ $response == "y" ]] && sudo shutdown -r 0
+    fi
+}
+
+usage() {
+  echo "$(basename $0) <COMMAND>"
+  echo -e "\nCOMMAND:"
+  echo -e '\tcommon\t\tInstall common packages: git, zsh and configure vim'
+  echo -e '\tjenkins\t\tSet up a jenkins server.'
+}
+
+## Main
+case $1 in
+  'common') commonInstall; ending;;
+  'jenkins')    jenkinsInstall; ending;;
+  'help' | '--help' | '-h' | '') usage;;
+  *)           echo "$(basename $0): unknown option '$@'"; exit 1;;
+esac
 
 exit 0
