@@ -19,7 +19,7 @@ function installOrUpdateOnePackage()
                 willInstall=false
             fi
         fi
-        if willInstall; then
+        if $willInstall; then
             echo "$n install start..."
             sudo apt-get -y install $n
             echo "$n installed."
