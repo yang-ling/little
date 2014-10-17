@@ -256,7 +256,7 @@ function jenkinsInstall()
         commonInstall
     fi
     addJenkinsPPA
-    installOrUpdateOnePackage jenkins nginx maven
+    installOrUpdateOnePackage jenkins nginx maven openjdk-7-jdk
 
     # Configuration
     cd /etc/nginx/sites-available
