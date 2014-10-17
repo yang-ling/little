@@ -95,13 +95,14 @@ function commonInstall()
 
     # === PPA Section Start ===
     # Add PPA for git
-    needUpdate=0
+    firstRun=false
     echoSection "Checking whether git PPA exists..."
     if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
         echoInfo "Add git PPA..."
         sudo add-apt-repository ppa:git-core/ppa
         echoInfo "git PPA added."
-        needUpdate=1
+        # PPA will be added at first run
+        firstRun=true
     fi
     echoSection "Check finished."
     # === PPA Section end ===
@@ -113,9 +114,13 @@ function commonInstall()
     sudo aptitude update -y
     echoInfo "System updated"
 
-    echoInfo "Upgrade system..."
-    sudo aptitude upgrade -y
-    echoInfo "System upgraded."
+    if [ $firstRun ]; then
+        # Only upgrade system at first run
+        # Because upgrading system too often may cause problems.
+        echoInfo "Upgrade system..."
+        sudo aptitude upgrade -y
+        echoInfo "System upgraded."
+    fi
     echoSection "Update System Finished."
     # === Update System End ===
 
