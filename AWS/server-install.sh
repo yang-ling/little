@@ -114,7 +114,7 @@ function commonInstall()
     sudo aptitude update -y
     echoInfo "System updated"
 
-    if [ $firstRun ]; then
+    if $firstRun; then
         # Only upgrade system at first run
         # Because upgrading system too often may cause problems.
         echoInfo "Upgrade system..."
