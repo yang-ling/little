@@ -185,10 +185,10 @@ function commonInstall()
         echoInfo ".zshrc file downloaded."
     fi
 
-    echoInfo "Downloading custom zsh plugins..."
+    echoInfo "Configure custom zsh plugins..."
     [[ ! -d $_OH_MY_ZSH_CUSTOM_PLUGINS ]] && mkdir -p $_OH_MY_ZSH_CUSTOM_PLUGINS
     downloadCustomZshPlugin common-aliases.plugin.zsh
-    echoInfo "Custom zsh plugins downloaded."
+    echoInfo "Custom zsh plugins configuration finished."
     echoSection "Zsh configuration finished."
 
     echoHeader "Common packages installation finished."
