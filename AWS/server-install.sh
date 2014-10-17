@@ -113,27 +113,9 @@ function preparePPA()
     updateSystem
     echoSection "PPA ready."
 }
-function commonInstall()
+
+function configureVim()
 {
-    echo -e "\n"
-    echoHeader "Common packages installation start..."
-
-    if ! isCommonInstalled; then
-        # Only upgrade system at first run
-        # Because upgrading system too often may cause problems.
-        echoInfo "Upgrade system..."
-        sudo aptitude upgrade -y
-        echoInfo "System upgraded."
-    fi
-    echoSection "Update System Finished."
-    # === Update System End ===
-
-    # Installation
-    echoSection "Install git zsh ..."
-    installOrUpdateOnePackage git zsh
-    echoSection "Packages installed"
-
-    # Configure vim
     echoSection "Configure vim start..."
     if [ ! -d $_NEOBUNDLE ]; then
         echoInfo "Cloning neobundle.vim..."
@@ -147,8 +129,10 @@ function commonInstall()
     wget $_VIMRC_SERVER_URL -O $_VIMRC
     echoInfo "vimrc file downloaded."
     echoSection "Configure vim finished."
+}
 
-    # Config zsh and oh-my-zsh
+function configureZsh()
+{
     echoSection "Configure zsh start..."
     # Ignore errors
     installOhMyZsh || true
@@ -172,6 +156,33 @@ function commonInstall()
     downloadCustomZshPlugin common-aliases.plugin.zsh
     echoInfo "Custom zsh plugins configuration finished."
     echoSection "Zsh configuration finished."
+}
+
+function commonInstall()
+{
+    echo -e "\n"
+    echoHeader "Common packages installation start..."
+
+    if ! isCommonInstalled; then
+        # Only upgrade system at first run
+        # Because upgrading system too often may cause problems.
+        echoInfo "Upgrade system..."
+        sudo aptitude upgrade -y
+        echoInfo "System upgraded."
+    fi
+    echoSection "Update System Finished."
+    # === Update System End ===
+
+    # Installation
+    echoSection "Install git zsh ..."
+    installOrUpdateOnePackage git zsh
+    echoSection "Packages installed"
+
+    # Configure vim
+    configureVim
+
+    # Config zsh and oh-my-zsh
+    configureZsh
 
     echoHeader "Common packages installation finished."
     echo -e "\n"
@@ -268,18 +279,20 @@ function ending()
 }
 
 usage() {
-  echo "$(basename $0) <COMMAND>"
+  echo "usage: $(basename $0) <COMMAND>"
   echo -e "\nCOMMAND:"
   echo -e '\tcommon\t\tInstall common packages: git, zsh and configure vim'
-  echo -e '\tjenkins\t\tSet up a jenkins server.'
+  echo -e '\tjenkins\t\tSet up a jenkins server. This COMMAND will use COMMAND common'
+  echo -e '\ttool-configure\tConfigure vim and zsh,oh-my-zsh.This COMMAND does not required sudo.\n\t\t\tIt is useful when you create another user on the server and want to setup vim and zsh but no need install packages.'
 }
 
 ## Main
 case $1 in
   'common') preparePPA;commonInstall; ending;;
   'jenkins')    preparePPA;jenkinsInstall; ending;;
+  'tool-configure') configureVim; configureZsh;;
   'help' | '--help' | '-h' | '') usage;;
-  *)           echo "$(basename $0): unknown option '$@'"; exit 1;;
+  *)           echo "$(basename $0): unknown option '$@'"; usage; exit 1;;
 esac
 
 exit 0
