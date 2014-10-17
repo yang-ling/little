@@ -12,8 +12,7 @@ function installOrUpdateOnePackage()
     do
         willInstall=true
         if dpkg -s "$n" >/dev/null 2>&1; then
-            echo "$n is aready installed."
-            echo -n "Do you want to update it? [Y/n]"
+            echo -n "$n is aready installed. Do you want to update $n? [Y/n]"
             read response2
             if [ "$response2" == "n" ]; then
                 willInstall=false
@@ -30,8 +29,7 @@ function installOrUpdateOnePackage()
 function installOhMyZsh()
 {
     if [ -d ~/.oh-my-zsh ]; then
-        echo "oh-my-zsh already installed."
-        echo "Do you want install again? You current installation will be backup. [Y/n]"
+        echo -n "oh-my-zsh already installed. Do you want install again? You current installation will be backup. [Y/n]"
         read response
         [[ $response == "n" ]] && return 0
         rm -rf ~/.oh-my-zsh.bak/
@@ -57,11 +55,11 @@ function backupFile()
     if [ -f $1 ]; then
         echo -n "$1 exists. Do you want to backup it and create it again? [y/N]"
         read response
-        [[ $response == "y" ]] || return false
+        [[ "$response" == "y" ]] || return 1
         mv -f $1 ${1}.bak
         echo "Backup finished."
-        return true
     fi
+    return 0
 }
 
 function commonInstall()
@@ -130,7 +128,7 @@ function commonInstall()
         exit 1
     fi
     if [ "$SHELL" != "$(which zsh)" ]; then
-        echo "\033[0;34mTime to change your default shell to zsh!\033[0m"
+        echo -e "\033[0;34mTime to change your default shell to zsh!\033[0m"
         chsh -s `which zsh`
     fi
 
