@@ -44,49 +44,37 @@ function installOrUpdateOnePackage()
 {
     for n
     do
-        willInstall=true
-        if dpkg -s "$n" >/dev/null 2>&1; then
-            echo -n "$n is aready installed. Do you want to update $n? [y/N]"
-            read response2
-            if [ "$response2" != "y" ]; then
-                willInstall=false
-            fi
-        fi
-        if $willInstall; then
-            echoInfo "$n install start..."
-            sudo apt-get -y install $n
-            echoInfo "$n installed."
-        fi
+        echoInfo "$n install start..."
+        sudo apt-get -y install $n
+        echoInfo "$n installed."
     done
 }
 
 function installOhMyZsh()
 {
-    if [ -d $_OH_MY_ZSH ]; then
-        echo -n "oh-my-zsh already installed. Do you want install again? You current installation will be backup. [y/N]"
+    backupFileOrFolder $_OH_MY_ZSH
+
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        echo -n "You must know your password. Do you have it? [yes/no]"
         read response
-        [[ $response == "y" ]] || return 0
-        rm -rf ${_OH_MY_ZSH}.bak
-        mv ${_OH_MY_ZSH} ${_OH_MY_ZSH}.bak
-    fi
-    echo -n "You must know your password. Do you have it? [yes/no]"
-    read response
-    if [ "$response" != "yes" ]; then
-        echo -n "Are you on EC2 and your username is ubuntu? [yes/no]"
-        read response2
-        if [ "$response2" == "yes" ]; then
-            sudo passwd ubuntu
-        else
-            echoInfo "Please get your password"
-            exit 1
+        if [ "$response" != "yes" ]; then
+            echo -n "Are you on EC2 and your username is ubuntu? [yes/no]"
+            read response2
+            if [ "$response2" == "yes" ]; then
+                sudo passwd ubuntu
+            else
+                echoInfo "Please get your password"
+                exit 1
+            fi
         fi
     fi
     wget $_OH_MY_ZSH_INSTALL_URL -O - | zsh
 }
 
-function backupFile()
+function backupFileOrFolder()
 {
-    if [ -f $1 ]; then
+    if [ -f $1 ] || [ -d $1 ]; then
+        rm -rf ${1}.bak
         mv -f $1 ${1}.bak
         echoInfo "$1 exists. Backup to ${1}.bak"
     fi
@@ -120,21 +108,14 @@ function commonInstall()
 
     # === Update System Start ===
     echoSection "Update System Start..."
-    if [ $needUpdate -ne 1 ]; then
-        echo -n "Do you want to update and upgrade system? [y/N]"
-        read response
-        [[ "$response" == "y" ]] && needUpdate=1
-    fi
 
-    if [ $needUpdate -eq 1 ]; then
-        echoInfo "Update system..."
-        sudo aptitude update -y
-        echoInfo "System updated"
+    echoInfo "Update system..."
+    sudo aptitude update -y
+    echoInfo "System updated"
 
-        echoInfo "Upgrade system..."
-        sudo aptitude upgrade -y
-        echoInfo "System upgraded."
-    fi
+    echoInfo "Upgrade system..."
+    sudo aptitude upgrade -y
+    echoInfo "System upgraded."
     echoSection "Update System Finished."
     # === Update System End ===
 
@@ -152,7 +133,7 @@ function commonInstall()
         git clone $_NEOBUNDLE_REPO $_NEOBUNDLE
         echoInfo "neobundle.vim cloned"
     fi
-    backupFile $_VIMRC
+    backupFileOrFolder $_VIMRC
     echoInfo "Downloading vimrc file..."
     wget $_VIMRC_SERVER_URL -O $_VIMRC
     echoInfo "vimrc file downloaded."
@@ -172,7 +153,7 @@ function commonInstall()
         chsh -s `which zsh`
     fi
 
-    backupFile $_ZSHRC
+    backupFileOrFolder $_ZSHRC
     echoInfo "Downloading .zshrc file"
     wget $_ZSHRC_SERVER_URL -O $_ZSHRC
     echoInfo ".zshrc file downloaded."
@@ -209,7 +190,7 @@ function configureJenkins()
         read response
         [[ "$response" == "y" ]] || return 0
     fi
-    backupFile /etc/nginx/sites-available/jenkins
+    backupFileOrFolder /etc/nginx/sites-available/jenkins
     # Jenkins nginx config file
     echoInfo "Creating jenkins config file..."
     echo -n "Please input your DNS or IP: "
