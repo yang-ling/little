@@ -87,22 +87,16 @@ function installOhMyZsh()
 function backupFile()
 {
     if [ -f $1 ]; then
-        echo -n "$1 exists. Do you want to backup it and create it again? [y/N]"
-        read response
-        [[ "$response" == "y" ]] || return 1
         mv -f $1 ${1}.bak
-        echoInfo "Backup to ${1}.bak"
+        echoInfo "$1 exists. Backup to ${1}.bak"
     fi
-    return 0
 }
 
 function downloadCustomZshPlugin()
 {
     for n
     do
-        if backupFile ${_OH_MY_ZSH_CUSTOM_PLUGINS}/$n; then
-            wget ${_OH_MY_ZSH_CUSTOM_PLUGINS_URL_BASE}/$n -O ${_OH_MY_ZSH_CUSTOM_PLUGINS}/$n
-        fi
+        wget ${_OH_MY_ZSH_CUSTOM_PLUGINS_URL_BASE}/$n -O ${_OH_MY_ZSH_CUSTOM_PLUGINS}/$n
     done
 }
 
@@ -158,11 +152,10 @@ function commonInstall()
         git clone $_NEOBUNDLE_REPO $_NEOBUNDLE
         echoInfo "neobundle.vim cloned"
     fi
-    if backupFile $_VIMRC; then
-        echoInfo "Downloading vimrc file..."
-        wget $_VIMRC_SERVER_URL -O $_VIMRC
-        echoInfo "vimrc file downloaded."
-    fi
+    backupFile $_VIMRC
+    echoInfo "Downloading vimrc file..."
+    wget $_VIMRC_SERVER_URL -O $_VIMRC
+    echoInfo "vimrc file downloaded."
     echoSection "Configure vim finished."
 
     # Config zsh and oh-my-zsh
@@ -179,11 +172,10 @@ function commonInstall()
         chsh -s `which zsh`
     fi
 
-    if backupFile $_ZSHRC; then
-        echoInfo "Downloading .zshrc file"
-        wget $_ZSHRC_SERVER_URL -O $_ZSHRC
-        echoInfo ".zshrc file downloaded."
-    fi
+    backupFile $_ZSHRC
+    echoInfo "Downloading .zshrc file"
+    wget $_ZSHRC_SERVER_URL -O $_ZSHRC
+    echoInfo ".zshrc file downloaded."
 
     echoInfo "Configure custom zsh plugins..."
     [[ ! -d $_OH_MY_ZSH_CUSTOM_PLUGINS ]] && mkdir -p $_OH_MY_ZSH_CUSTOM_PLUGINS
@@ -204,19 +196,22 @@ function isCommonInstalled()
 function addJenkinsPPA()
 {
     [[ -f /etc/apt/sources.list.d/jenkins.list ]] && return 0
-    echo "Adding Jenkins PPA..."
+    echoSection "Adding Jenkins PPA..."
     wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-    echo "Jenkins PPA added."
+    echoSection "Jenkins PPA added."
 }
 
 function configureJenkins()
 {
-    if ! backupFile /etc/nginx/sites-available/jenkins; then
-        return 0
+    if [ -f /etc/nginx/sites-available/jenkins ]; then
+        echo -n "Jenkins configuration file exists. Do you want to reset it? [y/N]"
+        read response
+        [[ "$response" == "y" ]] || return 0
     fi
+    backupFile /etc/nginx/sites-available/jenkins
     # Jenkins nginx config file
-    echo "Creating jenkins config file..."
+    echoInfo "Creating jenkins config file..."
     echo -n "Please input your DNS or IP: "
     read response_dns
     sudo tee /etc/nginx/sites-available/jenkins > /dev/null << EOF
@@ -241,21 +236,21 @@ if (!-f \$request_filename) {
     }
 }
 EOF
-    echo "Jenkins config file created"
+    echoInfo "Jenkins config file created"
 
-    echo "Create symbol link: /etc/nginx/sites-available/jenkins => /etc/nginx/sites-enabled/"
+    echoInfo "Create symbol link: /etc/nginx/sites-available/jenkins => /etc/nginx/sites-enabled/"
     sudo ln -sf /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
-    echo "Symbol link created."
+    echoInfo "Symbol link created."
 
-    echo "Restart nginx..."
+    echoInfo "Restart nginx..."
     sudo service nginx restart
-    echo "Nginx restarted."
+    echoInfo "Nginx restarted."
 }
 # Install jenkins on Ubuntu Server
 function jenkinsInstall()
 {
     echo -e "\n"
-    echo "Jenkins Server installation start..."
+    echoHeader "Jenkins Server installation start..."
     if ! isCommonInstalled; then
         commonInstall
     fi
@@ -267,15 +262,15 @@ function jenkinsInstall()
     sudo rm -f default ../sites-enabled/default
     configureJenkins
 
-    echo "Jenkins Server installation finished."
+    echoHeader "Jenkins Server installation finished."
     echo -e "\n"
 }
 
 function ending()
 {
     if [ "$SHELL" != "$(which zsh)" ]; then
-        echo "Your shell is not zsh."
-        echo "You need reboot to make installation take effect."
+        echoInfo "Your shell is not zsh."
+        echoInfo "You need reboot to make installation take effect."
         echo -n "Reboot now? [y/N]"
         read response
         [[ $response == "y" ]] && sudo shutdown -r 0
