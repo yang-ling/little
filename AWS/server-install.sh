@@ -6,34 +6,68 @@
 # Install common packages
 # git, zsh, oh-my-zsh
 # Configure vim
+_OH_MY_ZSH=~/.oh-my-zsh
+_OH_MY_ZSH_CUSTOM_PLUGINS=${_OH_MY_ZSH}/custom/plugins
+_ZSHRC=~/.zshrc
+_VIMRC=~/.vimrc
+_VIM=~/.vim
+_VIM_BUNDLE=${_VIM}/bundle
+_NEOBUNDLE=${_VIM_BUNDLE}/neobundle.vim
+
+_NEOBUNDLE_REPO=git://github.com/Shougo/neobundle.vim
+_VIMRC_SERVER_URL=https://raw.githubusercontent.com/yang-ling/dotfiles/master/vimrc-server
+_ZSHRC_SERVER_URL=https://raw.githubusercontent.com/yang-ling/dotfiles/master/zshrc-server
+_OH_MY_ZSH_INSTALL_URL=https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh
+_OH_MY_ZSH_CUSTOM_PLUGINS_URL_BASE=https://raw.githubusercontent.com/yang-ling/dotfiles/master/oh-my-zsh/custom/plugins
+
+function echoHeader()
+{
+    # Blue, underline
+    echo -e "\33[0;34;4m${1}\33[0m"
+}
+function echoSection()
+{
+    echo -e "\33[47;30m${1}\33[0m"
+}
+function echoInfo()
+{
+    # Green
+    echo -e "\33[0;32m${1}\33[0m"
+}
+function echoError()
+{
+    # Red
+    echo -e "\33[0;31m${1}\33[0m"
+}
+
 function installOrUpdateOnePackage()
 {
     for n
     do
         willInstall=true
         if dpkg -s "$n" >/dev/null 2>&1; then
-            echo -n "$n is aready installed. Do you want to update $n? [Y/n]"
+            echo -n "$n is aready installed. Do you want to update $n? [y/N]"
             read response2
-            if [ "$response2" == "n" ]; then
+            if [ "$response2" != "y" ]; then
                 willInstall=false
             fi
         fi
         if $willInstall; then
-            echo "$n install start..."
+            echoInfo "$n install start..."
             sudo apt-get -y install $n
-            echo "$n installed."
+            echoInfo "$n installed."
         fi
     done
 }
 
 function installOhMyZsh()
 {
-    if [ -d ~/.oh-my-zsh ]; then
-        echo -n "oh-my-zsh already installed. Do you want install again? You current installation will be backup. [Y/n]"
+    if [ -d $_OH_MY_ZSH ]; then
+        echo -n "oh-my-zsh already installed. Do you want install again? You current installation will be backup. [y/N]"
         read response
-        [[ $response == "n" ]] && return 0
-        rm -rf ~/.oh-my-zsh.bak/
-        mv ~/.oh-my-zsh ~/.oh-my-zsh.bak
+        [[ $response == "y" ]] || return 0
+        rm -rf ${_OH_MY_ZSH}.bak
+        mv ${_OH_MY_ZSH} ${_OH_MY_ZSH}.bak
     fi
     echo -n "You must know your password. Do you have it? [yes/no]"
     read response
@@ -43,11 +77,11 @@ function installOhMyZsh()
         if [ "$response2" == "yes" ]; then
             sudo passwd ubuntu
         else
-            echo "Please get your password"
+            echoInfo "Please get your password"
             exit 1
         fi
     fi
-    wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+    wget $_OH_MY_ZSH_INSTALL_URL -O - | zsh
 }
 
 function backupFile()
@@ -57,101 +91,114 @@ function backupFile()
         read response
         [[ "$response" == "y" ]] || return 1
         mv -f $1 ${1}.bak
-        echo "Backup finished."
+        echoInfo "Backup finished."
     fi
     return 0
+}
+
+function downloadCustomZshPlugin()
+{
+    for n
+    do
+        if backupFile ${_OH_MY_ZSH_CUSTOM_PLUGINS}/$n; then
+            wget ${_OH_MY_ZSH_CUSTOM_PLUGINS_URL_BASE}/$n -O ${_OH_MY_ZSH_CUSTOM_PLUGINS}/$n
+        fi
+    done
 }
 
 function commonInstall()
 {
     echo -e "\n"
-    echo "Common packages installation start..."
+    echoHeader "Common packages installation start..."
 
     # === PPA Section Start ===
     # Add PPA for git
     needUpdate=0
-    echo "Checking whether git PPA exists..."
+    echoSection "Checking whether git PPA exists..."
     if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
-        echo "Add git PPA..."
+        echoInfo "Add git PPA..."
         sudo add-apt-repository ppa:git-core/ppa
-        echo "git PPA added."
+        echoInfo "git PPA added."
         needUpdate=1
     fi
-    echo "Check finished."
+    echoSection "Check finished."
     # === PPA Section end ===
 
     # === Update System Start ===
+    echoSection "Update System Start..."
     if [ $needUpdate -ne 1 ]; then
-        echo -n "Do you want to update and upgrade system? [Y/n]"
+        echo -n "Do you want to update and upgrade system? [y/N]"
         read response
-        [[ "$response" != "n" ]] && needUpdate=1
+        [[ "$response" == "y" ]] && needUpdate=1
     fi
 
     if [ $needUpdate -eq 1 ]; then
-        echo "Update system..."
+        echoInfo "Update system..."
         sudo aptitude update -y
-        echo "System updated"
+        echoInfo "System updated"
 
-        echo "Upgrade system..."
+        echoInfo "Upgrade system..."
         sudo aptitude upgrade -y
-        echo "System upgraded."
+        echoInfo "System upgraded."
     fi
+    echoSection "Update System Finished."
     # === Update System End ===
 
     # Installation
-    echo "Install git zsh ..."
+    echoSection "Install git zsh ..."
     installOrUpdateOnePackage git zsh
-    echo "Packages installed"
+    echoSection "Packages installed"
 
     # Configure vim
-    echo "Configure vim start..."
-    if [ ! -d  ~/.vim/bundle/neobundle.vim ]; then
-        echo "Cloning neobundle.vim..."
-        rm -rf ~/.vim/bundle
-        mkdir -p ~/.vim/bundle
-        git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-        echo "neobundle.vim cloned"
+    echoSection "Configure vim start..."
+    if [ ! -d $_NEOBUNDLE ]; then
+        echoInfo "Cloning neobundle.vim..."
+        rm -rf $_VIM_BUNDLE
+        mkdir -p $_VIM_BUNDLE
+        git clone $_NEOBUNDLE_REPO $_NEOBUNDLE
+        echoInfo "neobundle.vim cloned"
     fi
-    if backupFile ~/.vimrc; then
-        echo "Downloading vimrc file..."
-        wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/vimrc-server -O ~/.vimrc
-        echo "vimrc file downloaded."
+    if backupFile $_VIMRC; then
+        echoInfo "Downloading vimrc file..."
+        wget $_VIMRC_SERVER_URL -O $_VIMRC
+        echoInfo "vimrc file downloaded."
     fi
-    echo "Configure vim finished."
+    echoSection "Configure vim finished."
 
     # Config zsh and oh-my-zsh
+    echoSection "Configure zsh start..."
     # Ignore errors
     installOhMyZsh || true
-    if [ ! -d ~/.oh-my-zsh ]; then
-        echo "oh-my-zsh install failed."
-        echo "You need run this script again"
+    if [ ! -d $_OH_MY_ZSH ]; then
+        echoError "oh-my-zsh install failed."
+        echoError "You need run this script again"
         exit 1
     fi
     if [ "$SHELL" != "$(which zsh)" ]; then
-        echo -e "\033[0;34mTime to change your default shell to zsh!\033[0m"
+        echoInfo  "Time to change your default shell to zsh!"
         chsh -s `which zsh`
     fi
 
-    if backupFile ~/.zshrc; then
-        echo "Downloading .zshrc file"
-        wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/zshrc-server -O ~/.zshrc
-        echo ".zshrc file downloaded."
+    if backupFile $_ZSHRC; then
+        echoInfo "Downloading .zshrc file"
+        wget $_ZSHRC_SERVER_URL -O $_ZSHRC
+        echoInfo ".zshrc file downloaded."
     fi
 
-    echo "Downloading custom zsh plugins..."
-    [[ ! -d  ~/.oh-my-zsh/custom/plugins ]] && mkdir -p ~/.oh-my-zsh/custom/plugins
-    rm -rf ~/.oh-my-zsh/custom/plugins/common-aliases.plugin.zsh
-    wget https://raw.githubusercontent.com/yang-ling/dotfiles/master/oh-my-zsh/custom/plugins/common-aliases.plugin.zsh -O ~/.oh-my-zsh/custom/plugins/common-aliases.plugin.zsh
-    echo "Custom zsh plugins downloaded."
+    echoInfo "Downloading custom zsh plugins..."
+    [[ ! -d $_OH_MY_ZSH_CUSTOM_PLUGINS ]] && mkdir -p $_OH_MY_ZSH_CUSTOM_PLUGINS
+    downloadCustomZshPlugin common-aliases.plugin.zsh
+    echoInfo "Custom zsh plugins downloaded."
+    echoSection "Zsh configuration finished."
 
-    echo "Common packages installation finished."
+    echoHeader "Common packages installation finished."
     echo -e "\n"
 }
 
 # Check whether commonInstall executed
 function isCommonInstalled()
 {
-    test -f ~/.oh-my-zsh/custom/plugins/common-aliases.plugin.zsh
+    test -f ${_OH_MY_ZSH_CUSTOM_PLUGINS}/common-aliases.plugin.zsh
 }
 
 function addJenkinsPPA()
@@ -165,14 +212,14 @@ function addJenkinsPPA()
 
 function configureJenkins()
 {
-    if ! backupFile jenkins; then
+    if ! backupFile /etc/nginx/sites-available/jenkins; then
         return 0
     fi
     # Jenkins nginx config file
     echo "Creating jenkins config file..."
     echo -n "Please input your DNS or IP: "
     read response_dns
-    sudo tee jenkins > /dev/null << EOF
+    sudo tee /etc/nginx/sites-available/jenkins > /dev/null << EOF
 upstream app_server {
 server 127.0.0.1:8080 fail_timeout=0;
 }
