@@ -91,7 +91,7 @@ function backupFile()
         read response
         [[ "$response" == "y" ]] || return 1
         mv -f $1 ${1}.bak
-        echoInfo "Backup finished."
+        echoInfo "Backup to ${1}.bak"
     fi
     return 0
 }
