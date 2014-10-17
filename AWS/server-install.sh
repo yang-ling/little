@@ -23,21 +23,21 @@ _OH_MY_ZSH_CUSTOM_PLUGINS_URL_BASE=https://raw.githubusercontent.com/yang-ling/d
 function echoHeader()
 {
     # Blue, underline
-    echo -e "\33[0;34;4m${1}\33[0m"
+    echo -e "\033[0;34;4m${1}\033[0m"
 }
 function echoSection()
 {
-    echo -e "\33[47;30m${1}\33[0m"
+    echo -e "\033[47;30m${1}\033[0m"
 }
 function echoInfo()
 {
     # Green
-    echo -e "\33[0;32m${1}\33[0m"
+    echo -e "\033[0;32m${1}\033[0m"
 }
 function echoError()
 {
     # Red
-    echo -e "\33[0;31m${1}\33[0m"
+    echo -e "\033[0;31m${1}\033[0m"
 }
 
 function installOrUpdateOnePackage()
