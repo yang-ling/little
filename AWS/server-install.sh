@@ -83,10 +83,10 @@ function installOhMyZsh()
 function backupFileOrFolder()
 {
     if [ -f $1 ] || [ -d $1 ]; then
-        if ! rm -rf ${1}.bak; then
+        if ! rm -rf ${1}.bak &> /dev/null; then
             sudo rm -rf ${1}.bak
         fi
-        if ! mv -f $1 ${1}.bak; then
+        if ! mv -f $1 ${1}.bak &> /dev/null; then
             sudo mv -f $1 ${1}.bak
         fi
         echoInfo "$1 exists. Backup to ${1}.bak"
