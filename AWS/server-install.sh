@@ -97,31 +97,24 @@ function downloadCustomZshPlugin()
     done
 }
 
+function preparePPA()
+{
+    echoSection "Preparing PPA..."
+    if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
+        echoInfo "Add git PPA..."
+        sudo add-apt-repository ppa:git-core/ppa
+        echoInfo "git PPA added."
+    fi
+    addJenkinsPPA
+    updateSystem
+    echoSection "PPA ready."
+}
 function commonInstall()
 {
     echo -e "\n"
     echoHeader "Common packages installation start..."
 
-    # === PPA Section Start ===
-    # Add PPA for git
-    firstRun=false
-    echoSection "Checking whether git PPA exists..."
-    if [ ! -f "/etc/apt/sources.list.d/git-core-ppa-trusty.list" ]; then
-        echoInfo "Add git PPA..."
-        sudo add-apt-repository ppa:git-core/ppa
-        echoInfo "git PPA added."
-        # PPA will be added at first run
-        firstRun=true
-    fi
-    echoSection "Check finished."
-    # === PPA Section end ===
-
-    # === Update System Start ===
-    echoSection "Update System Start..."
-
-    updateSystem
-
-    if $firstRun; then
+    if ! isCommonInstalled; then
         # Only upgrade system at first run
         # Because upgrading system too often may cause problems.
         echoInfo "Upgrade system..."
@@ -189,11 +182,10 @@ function isCommonInstalled()
 function addJenkinsPPA()
 {
     [[ -f /etc/apt/sources.list.d/jenkins.list ]] && return 0
-    echoSection "Adding Jenkins PPA..."
+    echoInfo "Adding Jenkins PPA..."
     wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-    echoSection "Jenkins PPA added."
-    updateSystem
+    echoInfo "Jenkins PPA added."
 }
 
 function configureJenkins()
@@ -280,8 +272,8 @@ usage() {
 
 ## Main
 case $1 in
-  'common') commonInstall; ending;;
-  'jenkins')    jenkinsInstall; ending;;
+  'common') preparePPA;commonInstall; ending;;
+  'jenkins')    preparePPA;jenkinsInstall; ending;;
   'help' | '--help' | '-h' | '') usage;;
   *)           echo "$(basename $0): unknown option '$@'"; exit 1;;
 esac
