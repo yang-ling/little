@@ -6,6 +6,8 @@
 # Install common packages
 # git, zsh, oh-my-zsh
 # Configure vim
+set -e
+
 _OH_MY_ZSH=~/.oh-my-zsh
 _OH_MY_ZSH_CUSTOM_PLUGINS=${_OH_MY_ZSH}/custom/plugins
 _ZSHRC=~/.zshrc
@@ -38,6 +40,13 @@ function echoError()
 {
     # Red
     echo -e "\033[0;31m${1}\033[0m"
+}
+
+function updateSystem()
+{
+    echoInfo "Update system..."
+    sudo aptitude update -y
+    echoInfo "System updated"
 }
 
 function installOrUpdateOnePackage()
@@ -110,9 +119,7 @@ function commonInstall()
     # === Update System Start ===
     echoSection "Update System Start..."
 
-    echoInfo "Update system..."
-    sudo aptitude update -y
-    echoInfo "System updated"
+    updateSystem
 
     if $firstRun; then
         # Only upgrade system at first run
@@ -186,6 +193,7 @@ function addJenkinsPPA()
     wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
     echoSection "Jenkins PPA added."
+    updateSystem
 }
 
 function configureJenkins()
