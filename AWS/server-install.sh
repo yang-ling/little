@@ -273,6 +273,8 @@ function gitlabInstall()
     # https://scm.hue.workslan/tools/request-translator/tree/develop
     # install request translator
     # need install ruby
+    echoError "Not implemented"
+    exit 1
 }
 
 function ending()
