@@ -267,6 +267,14 @@ function jenkinsInstall()
     echo -e "\n"
 }
 
+function gitlabInstall()
+{
+    #TODO install gitlab server
+    # https://scm.hue.workslan/tools/request-translator/tree/develop
+    # install request translator
+    # need install ruby
+}
+
 function ending()
 {
     if [ "$SHELL" != "$(which zsh)" ]; then
