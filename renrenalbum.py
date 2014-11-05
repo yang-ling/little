@@ -10,10 +10,11 @@ import urllib2
 import cookielib
 
 import cmd
-import json
+# import json
 import getpass
 
 # import simplejson as json   # < 2.6
+
 
 class RRAD():
     def __init__(self):
@@ -23,7 +24,8 @@ class RRAD():
             os.mkdir(self.download_dir)
 
         # build the session
-        self.session = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+        self.session = urllib2.build_opener(urllib2.HTTPCookieProcessor(
+            cookielib.CookieJar()))
 
     # sign into renren.com
     def signin(self):
@@ -31,10 +33,11 @@ class RRAD():
         password = getpass.getpass('password: ')
         data = (
             ('email', username),
-            ('password',password),
-            ('origURL','http://www.renren.com/Home.do'),
-            ('domain',"renren.com"))
-        page = self.session.open('http://www.renren.com/PLogin.do', urllib.urlencode(data))
+            ('password', password),
+            ('origURL', 'http://www.renren.com/Home.do'),
+            ('domain', "renren.com"))
+        page = self.session.open(
+            'http://www.renren.com/PLogin.do', urllib.urlencode(data))
         page.close()
 
     def signout(self):
@@ -50,19 +53,25 @@ class RRAD():
 
     # get the album's photo links
     def get_album_info(self, album_url):
-        photo_links = [] # photo links in all pages
+        photo_links = []  # photo links in all pages
         album_name = album_url.split('/')[-1]
         # fetching links page by page
         content = self.do_get(album_url)
+        # need delete start
+        f = open("content.html", 'wb')
+        f.write(content)
+        f.close()
+        # need delete end
         links = re.findall(r'<a.*href="(.*)" class="picture">', content)
         if links:
             photo_links.extend([re.sub(r'\?.*$', '', link) for link in links])
-        return { 'album_name': album_name, 'photos': photo_links }
+        return {'album_name': album_name, 'photos': photo_links}
 
     def get_photo_file(self, photo_url):
         content = self.do_get(photo_url + '/large?xtype=album')
-        match = re.search(r'<div id="large-con"(.*?)src="(?P<src>.*?)" class="photo"', content,
-                flags=re.MULTILINE|re.DOTALL|re.IGNORECASE)
+        match = re.search(
+            r'<div id="large-con"(.*?)src="(?P<src>.*?)" class="photo"',
+            content, flags=re.MULTILINE | re.DOTALL | re.IGNORECASE)
         return match and match.group('src')
 
     # download the photo into the given album directory
@@ -73,7 +82,7 @@ class RRAD():
             f.write(self.session.open(photo_file).read())
             f.close()
             return True
-        except (Exception, e):
+        except:
             return False
 
     # download the album
@@ -84,7 +93,8 @@ class RRAD():
 
         # create the album directory if not exists
         album_dir = os.path.join(self.download_dir, album_info['album_name'])
-        if not os.path.isdir(album_dir): os.mkdir(album_dir)
+        if not os.path.isdir(album_dir):
+            os.mkdir(album_dir)
 
         # download each photo into the album directory
         print 'saving album to', album_dir
@@ -97,6 +107,7 @@ class RRAD():
             except:
                 print 'failed.'
         print 'all downloads completed.'
+
 
 class RRADCmd(cmd.Cmd):
     def __init__(self):
@@ -123,6 +134,7 @@ copyright : http://www.g2w.me
 
         Example:
             save http://photo.renren.com/photo/253423487/album-396516481'''
+
     def do_save(self, album_url):
         self.rrad.save_album(album_url)
 
