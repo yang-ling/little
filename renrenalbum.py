@@ -32,13 +32,13 @@ class RRAD():
         data = (
             ('email', username),
             ('password',password),
-            ('origURL','<a href="http://www.renren.com/Home.do">http://www.renren.com/Home.do'),
+            ('origURL','http://www.renren.com/Home.do'),
             ('domain',"renren.com"))
-        page = self.session.open('<a href="http://www.renren.com/PLogin.do">http://www.renren.com/PLogin.do', urllib.urlencode(data))
+        page = self.session.open('http://www.renren.com/PLogin.do', urllib.urlencode(data))
         page.close()
 
     def signout(self):
-        self.session.open('<a href="http://www.renren.com/Logout.do">http://www.renren.com/Logout.do')
+        self.session.open('http://www.renren.com/Logout.do')
 
     # fetch source code by post
     def do_post(self, url):
@@ -56,12 +56,11 @@ class RRAD():
         content = self.do_get(album_url)
         links = re.findall(r'<a.*href="(.*)" class="picture">', content)
         if links:
-            photo_links.extend([re.sub(r'\\?.*$', '', link) for link in links])
+            photo_links.extend([re.sub(r'\?.*$', '', link) for link in links])
         return { 'album_name': album_name, 'photos': photo_links }
 
     def get_photo_file(self, photo_url):
         content = self.do_get(photo_url + '/large?xtype=album')
-        open('c:/c.txt', 'w').write(content)
         match = re.search(r'<div id="large-con"(.*?)src="(?P<src>.*?)" class="photo"', content,
                 flags=re.MULTILINE|re.DOTALL|re.IGNORECASE)
         return match and match.group('src')
@@ -107,7 +106,7 @@ Renren Album Downloader V0.1
 =========================================
 author    : greatghoul
 email     : greatghoul@gmail.com
-copyright : <a href="http://www.g2w.me">http://www.g2w.me
+copyright : http://www.g2w.me
 '''
         self.prompt = '> '
         self.rrad = RRAD()
@@ -123,7 +122,7 @@ copyright : <a href="http://www.g2w.me">http://www.g2w.me
         print '''Save the given album.
 
         Example:
-            save <a href="http://photo.renren.com/photo/253423487/album-396516481">http://photo.renren.com/photo/253423487/album-396516481'''
+            save http://photo.renren.com/photo/253423487/album-396516481'''
     def do_save(self, album_url):
         self.rrad.save_album(album_url)
 
