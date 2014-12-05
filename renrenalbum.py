@@ -87,7 +87,9 @@ class RRAD():
 
     # download the album
     def save_album(self, url):
-        album_url = re.sub(r'[\\?\\#].*$', '', url)
+        # album_url = re.sub(r'[\\?\\#].*$', '', url)
+        url = "http://photo.renren.com/photo/391140849/album-949003909#Pager2"
+        album_url = url
 
         album_info = self.get_album_info(album_url)
 
