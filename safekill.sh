@@ -24,13 +24,11 @@ echoError()
 function safe_end_procs {
     old_ifs="$IFS"
     IFS=$'\n'
-    list_panes_var=""
     if [[ -z "$target_session" ]]; then
-        list_panes_var="-a"
+        panes=$(tmux list-panes -a -F "#{pane_id} #{pane_current_command} #{session_name}" 2>/dev/null)
     else
-        list_panes_var="-s -t ${target_session}"
+        panes=$(tmux list-panes -s -t $target_session -F "#{pane_id} #{pane_current_command} #{session_name}" 2>/dev/null)
     fi
-    panes=$(tmux list-panes ${list_panes_var} -F "#{pane_id} #{pane_current_command}" 2>/dev/null)
     if [[ $? -eq 0 ]]; then
         is_all_killed="false"
     else
@@ -40,6 +38,7 @@ function safe_end_procs {
     for pane_set in $panes; do
         pane_id=$(echo "$pane_set" | awk -F " " '{print $1}')
         pane_proc=$(echo "$pane_set" | awk -F " " '{print tolower($2)}')
+        session_name=$(echo "$pane_set" | awk -F " " '{print $3}')
         cmd="C-c"
         if [[ "$pane_proc" == "vim" ]]; then
             cmd='":qa" Enter'
@@ -53,7 +52,7 @@ function safe_end_procs {
             cmd='"Q"'
         fi
         echo $cmd | xargs tmux send-keys -t "$pane_id"
-        echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}"
+        echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}, session name=${session_name}"
     done
     IFS="$old_ifs"
 }
