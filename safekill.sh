@@ -70,9 +70,17 @@ retry_count=5
 while (( "$#" )) ; do
     case "$1" in
         -t)
-            shift; target_session=$1; shift ;;
+            shift
+            target_session=$1
+            [[ -z "$target_session" ]] && { echoError "Please specify target session."; usage; exit 1; }
+            shift
+            ;;
         -c)
-            shift; retry_count=$1; shift ;;
+            shift
+            retry_count=$1
+            [[ -z "$retry_count" ]] && { echoError "Please specify retry count"; usage; exit 1; }
+            shift
+            ;;
         *)
             usage; exit 0 ;;
     esac
