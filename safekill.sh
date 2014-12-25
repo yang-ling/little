@@ -92,7 +92,7 @@ while [ $safe_end_tries -lt $retry_count ]; do
     echoSection "${safe_end_tries} round finish"
     [[ "$is_all_killed" == "true" ]] && { break; }
     safe_end_tries=$[$safe_end_tries+1]
-    sleep 1
+    sleep 0.75
 done
 if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
