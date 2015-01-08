@@ -42,14 +42,12 @@ function safe_end_procs {
         cmd="C-c"
         if [[ "$pane_proc" == "vim" ]]; then
             cmd='":qa" Enter'
-        elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]]; then
+        elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]] || [[ "$pane_proc" == "newsbeuter" ]]; then
             cmd='"q"'
         elif [[ "$pane_proc" == "bash" ]] || [[ "$pane_proc" == "zsh" ]]; then
             cmd='C-c C-u "exit" Enter'
         elif [[ "$pane_proc" == "ssh" ]]; then
             cmd='Enter "~."'
-        elif [[ "$pane_proc" == "newsbeuter" ]]; then
-            cmd='"Q"'
         fi
         echo $cmd | xargs tmux send-keys -t "$pane_id"
         echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}, session name=${session_name}"
