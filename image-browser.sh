@@ -29,6 +29,8 @@ isInteger()
     return $?
 }
 
+command -v feh > /dev/null 2>&1 || { echo >&2 "ERROR: feh not found!"; exit 1; }
+
 usage="$(basename "$0") [options] image_dir
 
 options:
@@ -105,4 +107,5 @@ fi
 
 thumbnailHeight=`bc <<< "$thumbnailHeight * $theRatio"`
 thumbnailWidth=`bc <<< "$thumbnailWidth * $theRatio"`
+
 feh -t -r -Sfilename -E $thumbnailHeight -y $thumbnailWidth -W $paneWidth -A "gwenview %F" $dirname
