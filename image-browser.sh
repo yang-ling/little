@@ -37,7 +37,7 @@ options:
     -h|--help                       Show this help text
     -E thumbnail height             Default value: 256
     -y thumbnail width              Default value: 256
-    -W Thumbnail list pane width    Default value: 1960
+    -W Thumbnail list pane width    Default value: 1920
     -r Ratio value                  Default value: 1"
 
 options=$(getopt -o E:y:W:r:h -- "$@")
