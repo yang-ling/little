@@ -89,7 +89,19 @@ while test $# -gt 0; do
           ;;
       --)
           dirname=$2
-          shift 2;
+          # In this case branch, the $2 may be empty and parameter could be only one, which means only `--'
+          # If so and if we do shift 2, the $# will always be 1, thus cause infinite loop.
+          # So we need check parameter number here and do proper shift.
+          if [[ $# -eq 1 ]]; then
+              shift 1
+          else
+              shift 2;
+          fi
+          ;;
+      *)
+          echoError "Invalid parameter! $1"
+          echo "$usage"
+          exit 1
           ;;
   esac
 done
