@@ -40,7 +40,7 @@ options:
     -W Thumbnail list pane width    Default value: 1920
     -r Ratio value                  Default value: 1"
 
-options=$(getopt -o E:y:W:r:h -- "$@")
+options=$(getopt -o E:y:W:r:h --long help -- "$@")
 
 [ $? -eq 0 ] || {
     echoError "Incorrect options provided"
