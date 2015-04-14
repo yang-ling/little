@@ -20,6 +20,18 @@ echoError()
     # Red
     echo -e "\033[0;31m${1}\033[0m"
 }
+getPanesNumber() {
+    old_ifs="$IFS"
+    IFS=$'\n'
+    panes=$(tmux list-panes -a -F "#{pane_id} #{pane_current_command} #{session_name}" 2>/dev/null)
+    _panes_number=0
+    if [[ $? -eq 0 ]]; then
+        for pane_set in $panes; do
+            _panes_number=$(( _panes_number+1 ))
+        done
+    fi
+    IFS="$old_ifs"
+}
 
 function safe_end_procs {
     old_ifs="$IFS"
@@ -90,14 +102,30 @@ else
 fi
 
 safe_end_tries=0
+actual_tries=1
 is_all_killed="false"
+prev_panes_number=0
+curr_panes_number=0
+_panes_number=0
 while [ $safe_end_tries -lt $retry_count ]; do
-    echoSection "${safe_end_tries} round starting...."
+    echoSection "${actual_tries} round starting...."
+    getPanesNumber
+    prev_panes_number=$_panes_number
+    echo "Previous panes number is $prev_panes_number"
+
     safe_end_procs
-    echoSection "${safe_end_tries} round finish"
-    [[ "$is_all_killed" == "true" ]] && { break; }
-    safe_end_tries=$[$safe_end_tries+1]
+
     sleep 0.75
+    getPanesNumber
+    curr_panes_number=$_panes_number
+    echo "Current panes number is $curr_panes_number"
+    [[ "$is_all_killed" == "true" ]] && { break; }
+    if [[ ! $prev_panes_number -gt $curr_panes_number ]]; then
+        safe_end_tries=$[$safe_end_tries+1]
+        echoError "Panes are not reduced, $(( retry_count-safe_end_tries )) tries remaining"
+    fi
+    actual_tries=$(( actual_tries+1 ))
+    echoSection "${actual_tries} round finish"
 done
 if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
