@@ -61,14 +61,18 @@ doAddPageNumbers() {
 
 usage="$(basename "$0")  input_pdf_file_name output_pdf_file_name"
 
-[[ $# -eq 1 ]] || [[ $# -eq 2 ]]|| { echo "Invalid parameter numbers."; echo "$usage"; exit 1; }
+[[ $# -eq 1 ]] || { echo "Invalid parameter numbers."; echo "$usage"; exit 1; }
 [[ -f "$1" ]] || { echo "Input file $1 doesn't exist!"; exit 1; }
 filename="$1"
-output="$2"
 if [[ ! ${filename: -4} == ".pdf" ]]; then
     echo "Input file is $filename, and it is not PDF. This tool only supports PDF file."
     exit 1
 fi
+cp -f "$1" "$1.old"
+filename="$1.old"
+output="$1"
+
+echo "The original file is $filename"
 
 checkDependenciesForPagenumber
 doAddPageNumbers
