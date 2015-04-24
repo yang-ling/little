@@ -20,6 +20,15 @@ echoError()
     # Red
     echo -e "\033[0;31m${1}\033[0m"
 }
+killMoc() {
+    ps -ef | grep -v grep | grep mocp
+    if [[ $? -eq 0 ]]; then
+        mocp -x
+        echoInfo "MOC is killed"
+    else
+        echoInfo "MOC is not running"
+    fi
+}
 getPanesNumber() {
     old_ifs="$IFS"
     IFS=$'\n'
@@ -33,7 +42,8 @@ getPanesNumber() {
     IFS="$old_ifs"
 }
 
-function safe_end_procs {
+safe_end_procs() {
+
     old_ifs="$IFS"
     IFS=$'\n'
     if [[ -z "$target_session" ]]; then
@@ -56,7 +66,7 @@ function safe_end_procs {
             cmd='":qa" Enter'
         elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]] || [[ "$pane_proc" == "newsbeuter" ]]; then
             cmd='"q"'
-        elif [[ "$pane_proc" == "bash" ]] || [[ "$pane_proc" == "zsh" ]]; then
+        elif [[ "$pane_proc" == "bash" ]] || [[ "$pane_proc" == "zsh" ]] || [[ "$pane_proc" == "adb" ]]; then
             cmd='C-c C-u "exit" Enter'
         elif [[ "$pane_proc" == "ssh" ]]; then
             cmd='Enter "~."'
@@ -94,6 +104,10 @@ while (( "$#" )) ; do
             usage; exit 0 ;;
     esac
 done
+echoHeader "Try to kill MOC..."
+killMoc
+echoHeader "MOC killing job done."
+
 echoHeader "Safe kill tmux sessions starting...."
 if [[ -z "$target_session" ]]; then
     echo "Kill all sessions"
