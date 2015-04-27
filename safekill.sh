@@ -66,6 +66,8 @@ safe_end_procs() {
             cmd='":qa" Enter'
         elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]] || [[ "$pane_proc" == "newsbeuter" ]]; then
             cmd='"q"'
+        elif [[ "$pane_proc" == "mocp" ]]; then
+            cmd='"Q"'
         elif [[ "$pane_proc" == "bash" ]] || [[ "$pane_proc" == "zsh" ]] || [[ "$pane_proc" == "adb" ]]; then
             cmd='C-c C-u "exit" Enter'
         elif [[ "$pane_proc" == "ssh" ]]; then
@@ -104,9 +106,6 @@ while (( "$#" )) ; do
             usage; exit 0 ;;
     esac
 done
-echoHeader "Try to kill MOC..."
-killMoc
-echoHeader "MOC killing job done."
 
 echoHeader "Safe kill tmux sessions starting...."
 if [[ -z "$target_session" ]]; then
@@ -143,6 +142,9 @@ while [ $safe_end_tries -lt $retry_count ]; do
 done
 if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
+    echoHeader "Try to kill MOC..."
+    killMoc
+    echoHeader "MOC killing job done."
 else
     echoError "Could not end all processes, you're on your own now!"
 fi
