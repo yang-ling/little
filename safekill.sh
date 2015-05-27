@@ -72,6 +72,9 @@ safe_end_procs() {
             cmd='C-c C-u "exit" Enter'
         elif [[ "$pane_proc" == "ssh" ]]; then
             cmd='Enter "~."'
+        elif [[ "$pane_proc" == "python" ]]; then
+            # This is for ranger
+            cmd='"q"'
         fi
         echo $cmd | xargs tmux send-keys -t "$pane_id"
         echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}, session name=${session_name}"
