@@ -88,6 +88,34 @@ usage() {
   echo -e '\t-c <retry_count>\t\tRetry count. Default value is 5'
 }
 
+mainLoop() {
+    while [ $safe_end_tries -lt $retry_count ]; do
+        echoSection "${actual_tries} round starting...."
+        getPanesNumber
+        prev_panes_number=$_panes_number
+        echo "Previous panes number is $prev_panes_number"
+
+        safe_end_procs
+
+        sleep 0.75
+        getPanesNumber
+        curr_panes_number=$_panes_number
+        echo "Current panes number is $curr_panes_number"
+        [[ "$is_all_killed" == "true" ]] && { break; }
+        if [[ ! $prev_panes_number -gt $curr_panes_number ]]; then
+            if [[ $curr_panes_number -gt 1 ]] || [[ ! "$pane_proc" == "mocp" ]]; then
+                # if mocp is the last one, we don't count.
+                safe_end_tries=$[$safe_end_tries+1]
+                echoError "Panes are not reduced, $(( retry_count-safe_end_tries )) tries remaining"
+            fi
+        else
+            safe_end_tries=0
+        fi
+        actual_tries=$(( actual_tries+1 ))
+        echoSection "${actual_tries} round finish"
+    done
+}
+
 ## Main
 target_session=""
 retry_count=5
@@ -123,26 +151,9 @@ is_all_killed="false"
 prev_panes_number=0
 curr_panes_number=0
 _panes_number=0
-while [ $safe_end_tries -lt $retry_count ]; do
-    echoSection "${actual_tries} round starting...."
-    getPanesNumber
-    prev_panes_number=$_panes_number
-    echo "Previous panes number is $prev_panes_number"
 
-    safe_end_procs
+mainLoop
 
-    sleep 0.75
-    getPanesNumber
-    curr_panes_number=$_panes_number
-    echo "Current panes number is $curr_panes_number"
-    [[ "$is_all_killed" == "true" ]] && { break; }
-    if [[ ! $prev_panes_number -gt $curr_panes_number ]]; then
-        safe_end_tries=$[$safe_end_tries+1]
-        echoError "Panes are not reduced, $(( retry_count-safe_end_tries )) tries remaining"
-    fi
-    actual_tries=$(( actual_tries+1 ))
-    echoSection "${actual_tries} round finish"
-done
 if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
     echoHeader "Try to kill MOC..."
