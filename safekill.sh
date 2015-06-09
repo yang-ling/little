@@ -103,11 +103,8 @@ mainLoop() {
         echo "Current panes number is $curr_panes_number"
         [[ "$is_all_killed" == "true" ]] && { break; }
         if [[ ! $prev_panes_number -gt $curr_panes_number ]]; then
-            if [[ $curr_panes_number -gt 1 ]] || [[ ! "$pane_proc" == "mocp" ]]; then
-                # if mocp is the last one, we don't count.
-                safe_end_tries=$[$safe_end_tries+1]
-                echoError "Panes are not reduced, $(( retry_count-safe_end_tries )) tries remaining"
-            fi
+            safe_end_tries=$[$safe_end_tries+1]
+            echoError "Panes are not reduced, $(( retry_count-safe_end_tries )) tries remaining"
         else
             safe_end_tries=0
         fi
