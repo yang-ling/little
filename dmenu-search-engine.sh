@@ -2,7 +2,7 @@
 
 [[ -f $HOME/.dmenurc ]] && { . $HOME/.dmenurc;  }
 
-[[ -n "$DMENU" ]] || { DMENU='dmenu -nb #000000 -nf #ECDDA6 -sb #000000 -sf #b23308 -fn Ubuntu-16:bold -i '; }
+[[ -n "$DMENU" ]] || { DMENU='dmenu -nb #000000 -nf #ECDDA6 -sb #000000 -sf #b23308 -fn Ubuntu-16:bold -i'; }
 
 SEARCH_ENGINE="ciba
 google"
@@ -10,8 +10,13 @@ google"
 result=$(echo -e "$SEARCH_ENGINE" | $DMENU -p "Choose search engine:")
 
 selected_engine="${result%% *}"
+[[ -z "$selected_engine" ]] && { echo "No search engine. Exit."; exit 0; }
 
-search_content=$(echo "" | $DMENU -p "Input search content:" $*)
+result=$(echo "" | $DMENU -p "Input search content:" $*)
+
+search_content="${result%% *}"
+
+[[ -z "$search_content" ]] && { echo "No search content. Exit."; exit 0; }
 
 case "$selected_engine" in
     ciba)
