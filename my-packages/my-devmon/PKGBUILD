@@ -15,5 +15,5 @@ md5sums=('dc2cb728dbf470ac4cc1466f29af9ea3'
 
 package() {
     install -Dm644 "$srcdir/devmon@.service" "$pkgdir/etc/systemd/system/devmon@.service"
-    install -Dm755 "clean-umounted.sh" "$pkgdir/usr/local/bin/clean-umounted"
+    install -Dm755 "$srcdir/clean-umounted.sh" "$pkgdir/usr/local/bin/clean-umounted"
 }
