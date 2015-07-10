@@ -17,5 +17,3 @@ while [ $isClean -ne 0 ] ; do
 done
 
 /usr/bin/paccache -r && /usr/bin/paccache -ruk0 && pacman-optimize && sync
-
-set +ex
