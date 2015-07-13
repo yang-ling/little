@@ -7,12 +7,12 @@
 SEARCH_ENGINE="ciba
 google"
 
-result=$(echo -e "$SEARCH_ENGINE" | $DMENU -p "Choose search engine:")
+result=$(echo -e "$SEARCH_ENGINE" | rofi -dmenu -p "Choose search engine:")
 
 selected_engine="${result%% *}"
 [[ -z "$selected_engine" ]] && { echo "No search engine. Exit."; exit 0; }
 
-result=$(echo "" | $DMENU -p "Input search content:" $*)
+result=$(echo "" | rofi -dmenu -p "Input search content:" $*)
 
 search_content="${result%% *}"
 
