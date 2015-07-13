@@ -1,0 +1,9 @@
+[Unit]
+Description=Empty Trash Service
+AssertFileIsExecutable=/usr/local/bin/empty-trash
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/empty-trash %i
+IOSchedulingClass=idle
+IOSchedulingPriority=7

@@ -1,0 +1,23 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=empty-trash-timer
+pkgver=1
+pkgrel=1
+pkgdesc="Empty Trash Timer. Daily"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash')
+arch=('any')
+source=('empty-trash@.timer'
+        'empty-trash@.service'
+        'empty-trash.sh')
+
+md5sums=('51f652877f8e7a8774b1d6817fc4ff42'
+         '5f86f358118e026f28b2b3d4c503eb16'
+         '25781484607ef63daf32529759df28fb')
+
+package() {
+    install -Dm644 "$srcdir/empty-trash@.service" "$pkgdir/etc/systemd/system/empty-trash@.service"
+    install -Dm644 "$srcdir/empty-trash@.timer" "$pkgdir/etc/systemd/system/empty-trash@.timer"
+    install -Dm755 "$srcdir/empty-trash.sh" "$pkgdir/usr/local/bin/empty-trash"
+}
