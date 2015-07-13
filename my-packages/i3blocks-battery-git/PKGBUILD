@@ -1,0 +1,26 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=i3blocks-battery-git
+_pkgname=i3blocks-battery
+pkgver=r6.9321937
+pkgrel=1
+pkgdesc="i3blocks blocklet script to output the current status of your battery"
+arch=('any')
+url="https://github.com/kb100/${_pkgname}"
+license=('GPL2')
+depends=('python3')
+makedepends=('git')
+optdepends=('i3-wm: i3 window manager'
+            'i3blocks: Better to use  with i3blocks')
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+source=("git+https://github.com/kb100/${_pkgname}")
+md5sums=('SKIP')
+pkgver() {
+    cd "$srcdir/${_pkgname}"
+    # Git, no tags available
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+package() {
+    cd "$srcdir/${_pkgname}"
+    install -Dm755 "battery.py" "$pkgdir/usr/lib/i3blocks/blocks/${_pkgname}/battery.py"
+}
