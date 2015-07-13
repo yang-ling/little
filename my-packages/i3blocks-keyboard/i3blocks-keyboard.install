@@ -1,0 +1,11 @@
+post_install() {
+    echo "
+      Put the following to your i3blocks config
+
+      [keyboard]
+      label=
+      command=/usr/lib/i3blocks/blocks/i3blocks-keyboard/keyboard.sh
+      interval=once
+      signal=1
+    "
+}
