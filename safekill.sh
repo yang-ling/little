@@ -64,7 +64,7 @@ safe_end_procs() {
         cmd="C-c"
         if [[ "$pane_proc" == "vim" ]]; then
             cmd='":qa" Enter'
-        elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]] || [[ "$pane_proc" == "newsbeuter" ]]; then
+        elif [[ "$pane_proc" == "man" ]] || [[ "$pane_proc" == "less" ]] || [[ "$pane_proc" == "newsbeuter" ]] || [[ "$pane_proc" == "ncmpcpp" ]]; then
             cmd='"q"'
         elif [[ "$pane_proc" == "mocp" ]]; then
             cmd='"Q"'
