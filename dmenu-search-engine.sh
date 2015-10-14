@@ -20,7 +20,7 @@ search_content="${result%% *}"
 
 case "$selected_engine" in
     ciba)
-        xdg-open "http://www.iciba.com/$search_content/";;
+        xdg-open "http://www.iciba.com/$search_content";;
     google)
         xdg-open "http://www.google.com/search?q=$search_content";;
     *)
