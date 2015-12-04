@@ -30,14 +30,14 @@
 # VT: Launch in the same terminal
 
 # The lists of programs to be executed are
-https_prgs="/usr/bin/vimb:XW /usr/bin/qutebrowser:XW /usr/bin/google-chrome-stable:XW"
-http_prgs="/usr/bin/vimb:XW /usr/bin/qutebrowser:XW /usr/bin/google-chrome-stable:XW"
+https_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
+http_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
 mailto_prgs="/usr/bin/mutt:VT /usr/bin/elm:VT /usr/bin/pine:VT /usr/bin/mail:VT"
 gopher_prgs="/usr/bin/lynx:XT /usr/bin/gopher:XT"
 ftp_prgs="/usr/bin/lynx:XT /usr/bin/ncftp:XT"
 
-img_prgs="/usr/bin/feh:XW"
-gifv_prgs="/usr/bin/vimb:XW /usr/bin/qutebrowser:XW /usr/bin/google-chrome-stable:XW"
+img_prgs="/usr/bin/qutebrowser:XW /usr/bin/feh:XW"
+gifv_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
 
 # Program used as an xterm (if it doesn't support -T you'll need to change
 # the command line in getprg)
