@@ -1,0 +1,20 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=arch-auto-download-updates-timer
+pkgver=1
+pkgrel=2
+pkgdesc="Automatically download updates everyday"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+arch=('any')
+source=('auto-downloadupdates.service'
+        'auto-downloadupdates.timer'
+        )
+
+md5sums=('cb640fa4784f39723e9fb806d518ee75'
+         'b770e725f0c75137e5785c70c54e3536')
+
+package() {
+    install -Dm644 "$srcdir/auto-downloadupdates.service" "$pkgdir/etc/systemd/system/auto-downloadupdates.service"
+    install -Dm644 "$srcdir/auto-downloadupdates.timer" "$pkgdir/etc/systemd/system/auto-downloadupdates.timer"
+}

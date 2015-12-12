@@ -1,0 +1,12 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Automatic Download Updates when booted up after 1h minutes then check the system for updates every day
+
+[Timer]
+OnBootSec=1h
+OnUnitActiveSec=24h
+
+[Install]
+WantedBy=multi-user.target

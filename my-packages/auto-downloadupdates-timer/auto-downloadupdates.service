@@ -1,0 +1,15 @@
+[Unit]
+Description=Automatic Download Updates
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pacman -Syuw --noconfirm
+TimeoutStopSec=600
+KillMode=process
+KillSignal=SIGINT
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target
