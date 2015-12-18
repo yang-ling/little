@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 sendWarning() {
     notify-send -t 300000 -u critical "$1" "$2"
 }
