@@ -32,4 +32,4 @@ main() {
     done
 }
 
-main | adddate
+main | adddate >> "$HOME/.sync-mail-log/sync-mails-$(date +'%F-%H-%M-%S')" 2>&1
