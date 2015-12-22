@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 sendWarning() {
+    echo "$2"
     notify-send -t 300000 -u critical "$1" "$2"
 }
 
@@ -11,24 +12,48 @@ adddate() {
 }
 
 LOCKFILE=/tmp/sync-mails-dotfile
+MAX_RETRY_COUNT=5
+
+wait_time=${1:-1m}
+retry_count=0
+round=0
+
+check_retry() {
+    retry_count=$(( retry_count+1 ))
+    [[ $retry_count -lt $MAX_RETRY_COUNT ]] || { sendWarning "Sync Mail" "No retry available! Exit with error!"; exit 1; }
+    sendWarning "Sync Mail" "Tried $retry_count times, and $MAX_RETRY_COUNT tries in total are available. Continue..."
+}
 
 main() {
     echo "Start Sync Mails!"
     notify-send "Start Sync Mails!"
 
     while true ; do
-        sleep 5m
+        round=$(( round+1 ))
+        echo "Round $round started!"
+        echo "Sleep ${wait_time} at first..."
+        sleep ${wait_time}
+        echo "Sleep finished!"
+
+        echo "Check lockfile $LOCKFILE"
         dotlockfile -r 10 -l -p "$LOCKFILE"
 
-        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Previous sync lasts too long!"; exit 1;}
+        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Previous sync lasts too long!"; check_retry;}
+        echo "Lockfile check OK!"
 
+        echo "Start mbsync!"
         mbsync -c ~/.config/isync/mbsyncrc -a
-        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "mbsync throws error!"; exit 1; }
+        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "mbsync throws error!"; check_retry; }
+        echo "Finish mbsync!"
 
+        echo "Start offlineimap!"
         offlineimap -c ~/.config/offlineimap/offlineimap.conf
-        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "offlineimap throws error!"; exit 1; }
+        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "offlineimap throws error!"; check_retry; }
+        echo "Finish offlineimap!"
 
+        echo "Unlock lockfile!"
         dotlockfile -u "$LOCKFILE"
+        echo "Unlock lockfile finished!"
     done
 }
 
