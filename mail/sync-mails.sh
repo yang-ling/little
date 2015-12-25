@@ -12,16 +12,16 @@ adddate() {
 }
 
 LOCKFILE=/tmp/sync-mails-dotfile
-MAX_RETRY_COUNT=5
 
 wait_time=${1:-1m}
+max_retry_count=${2:-5}
 retry_count=0
 round=0
 
 check_retry() {
     retry_count=$(( retry_count+1 ))
-    [[ $retry_count -lt $MAX_RETRY_COUNT ]] || { sendWarning "Sync Mail" "No retry available! Exit with error!"; exit 1; }
-    sendWarning "Sync Mail" "Tried $retry_count times, and $MAX_RETRY_COUNT tries in total are available. Continue..."
+    [[ $retry_count -lt $max_retry_count ]] || { sendWarning "Sync Mail" "No retry available! Exit with error!"; exit 1; }
+    sendWarning "Sync Mail" "Tried $retry_count times, and $max_retry_count tries in total are available. Continue..."
 }
 
 main() {
