@@ -17,11 +17,13 @@ wait_time=${1:-1m}
 max_retry_count=${2:-5}
 retry_count=0
 round=0
+remaining_retry_count=$(( max_retry_count - retry_count ))
 
 check_retry() {
     retry_count=$(( retry_count+1 ))
     [[ $retry_count -lt $max_retry_count ]] || { sendWarning "Sync Mail" "No retry available! Exit with error!"; exit 1; }
-    sendWarning "Sync Mail" "Tried $retry_count times, and $max_retry_count tries in total are available. Continue..."
+    remaining_retry_count=$(( max_retry_count - retry_count ))
+    sendWarning "Sync Mail" "Tried $retry_count times, and $remaining_retry_count tries are available. Continue..."
 }
 
 main() {
@@ -31,6 +33,7 @@ main() {
     while true ; do
         round=$(( round+1 ))
         echo "Round $round started!"
+        echo "Tried $retry_count times, and $remaining_retry_count tries are available. Continue..."
         echo "Sleep ${wait_time} at first..."
         sleep ${wait_time}
         echo "Sleep finished!"
