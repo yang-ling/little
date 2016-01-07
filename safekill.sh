@@ -21,13 +21,36 @@ echoError()
     echo -e "\033[0;31m${1}\033[0m"
 }
 killMoc() {
-    ps -ef | grep -v grep | grep mocp
-    if [[ $? -eq 0 ]]; then
-        mocp -x
-        echoInfo "MOC is killed"
-    else
-        echoInfo "MOC is not running"
-    fi
+    echoHeader "Try to kill MOC..."
+    is_moc_running="true"
+    while [ "$is_moc_running" == "true" ]; do
+        ps -ef | grep -v grep | grep mocp
+        if [[ $? -eq 0 ]]; then
+            is_moc_running="true"
+            mocp -x
+            echoInfo "Killing MOC..."
+        else
+            is_moc_running="false"
+            echoInfo "MOC is not running or is killed."
+        fi
+    done
+    echoHeader "MOC killing job done."
+}
+killCompton() {
+    echoHeader "Try to kill Compton..."
+    is_compton_running="true"
+    while [ "$is_compton_running" == "true" ]; do
+        ps -ef | grep -v grep | grep compton
+        if [[ $? -eq 0 ]]; then
+            is_compton_running="true"
+            pkill compton
+            echoInfo "Killing compton..."
+        else
+            is_compton_running="false"
+            echoInfo "Compton is not running or is killed"
+        fi
+    done
+    echoHeader "Compton killing job done."
 }
 getPanesNumber() {
     old_ifs="$IFS"
@@ -153,9 +176,8 @@ mainLoop
 
 if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
-    echoHeader "Try to kill MOC..."
     killMoc
-    echoHeader "MOC killing job done."
+    killCompton
 else
     echoError "Could not end all processes, you're on your own now!"
 fi
