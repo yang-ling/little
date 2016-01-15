@@ -52,6 +52,22 @@ killCompton() {
     done
     echoHeader "Compton killing job done."
 }
+killSogou() {
+    echoHeader "Try to kill Sogou..."
+    is_sogou_running="true"
+    while [ "$is_sogou_running" == "true" ]; do
+        ps -ef | grep -v grep | grep sogou-qimpanel
+        if [[ $? -eq 0 ]]; then
+            is_sogou_running="true"
+            pkill sogou-qimpanel
+            echoInfo "Killing Sogou..."
+        else
+            is_sogou_running="false"
+            echoInfo "Sogou is not running or is killed"
+        fi
+    done
+    echoHeader "Sogou killing job done."
+}
 getPanesNumber() {
     old_ifs="$IFS"
     IFS=$'\n'
@@ -178,6 +194,7 @@ if [[ "$is_all_killed" == "true" ]]; then
     echoHeader "Safe kill tmux sessions finished."
     killMoc
     killCompton
+    killSogou
 else
     echoError "Could not end all processes, you're on your own now!"
 fi
