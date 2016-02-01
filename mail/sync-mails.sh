@@ -2,7 +2,7 @@
 
 sendWarning() {
     echo "$2"
-    notify-send -t 300000 -u critical "$1" "$2"
+    notify-send -t 5000 -u critical "$1" "$2"
 }
 
 adddate() {
