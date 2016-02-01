@@ -16,4 +16,5 @@ while [ $isClean -ne 0 ] ; do
     orphans
 done
 
-/usr/bin/paccache -r && /usr/bin/paccache -ruk0 && pacman-optimize && sync
+# Keep one generation for each package and remove all uninstalled package cache.
+/usr/bin/paccache -rk2 -v && /usr/bin/paccache -ruk0 -v && pacman-optimize && sync

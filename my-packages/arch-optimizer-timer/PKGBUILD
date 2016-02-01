@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=arch-optimizer-timer
-pkgver=1
+pkgver=1.1
 pkgrel=1
 pkgdesc="Optimize archlinux monthly"
 url="https://github.com/yang-ling/little"
@@ -14,7 +14,7 @@ source=('arch-optimize.timer'
 
 md5sums=('683a81bdf8c9cdb6eb2c17a28a6f4a1a'
          '836f919a40b9b562c2bf961df3de7c63'
-         '82c3b486934b242765125fb05d1c84fc')
+         '4edba185f8bc6ebd0b21572bbe1e5e31')
 
 package() {
     install -Dm644 "$srcdir/arch-optimize.service" "$pkgdir/etc/systemd/system/arch-optimize.service"
