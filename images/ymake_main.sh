@@ -21,7 +21,7 @@ i=0
 for file in $(ls .); do
     i=$((i+1))
     index="$i"
-    if [ i lt 9 ]; then
+    if [ $i -lt 10 ]; then
         index="0${i}"
     fi
     newfilename="${brand_name}_${product_name}_${suffix_detail}_${index}${extension}"
