@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-clean-umounted.sh
+set -ex
+
+clean-umounted
 
 sudo shutdown -P now
