@@ -14,7 +14,7 @@ source=('arch-optimize.timer'
 
 md5sums=('683a81bdf8c9cdb6eb2c17a28a6f4a1a'
          '836f919a40b9b562c2bf961df3de7c63'
-         '4edba185f8bc6ebd0b21572bbe1e5e31')
+         '14711848ad3d6944cc91d8a058be8e4c')
 
 package() {
     install -Dm644 "$srcdir/arch-optimize.service" "$pkgdir/etc/systemd/system/arch-optimize.service"
