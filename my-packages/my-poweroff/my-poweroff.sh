@@ -4,4 +4,4 @@ set -ex
 
 clean-umounted
 
-sudo shutdown -P now
+systemctl poweroff
