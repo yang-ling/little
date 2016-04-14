@@ -2,7 +2,7 @@
 
 pkgname=i3pystatus-mine-git
 pkgdesc="i3status replacement written in python for the i3 window manager"
-pkgver=3.33.r126.g63801e5
+pkgver=3.33.r127.g3b15f3c
 pkgrel=1
 conflicts=('i3pystatus')
 provides=('i3pystatus')
@@ -21,6 +21,7 @@ optdepends=(
     'python-lxml: parcel',
     'python-pywapi: weather'
     'python-pyalsaaudio: ALSA'
+    'gsimplecal: clock'
     'python-psutil: memory')
 makedepends=('git' 'python-setuptools')
 url="https://github.com/yang-ling/i3pystatus"
