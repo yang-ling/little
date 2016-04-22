@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync zeronet users.json Service
+AssertFileIsExecutable=/usr/bin/sync-zeronet.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sync-zeronet.sh %i
+IOSchedulingClass=idle
+IOSchedulingPriority=7

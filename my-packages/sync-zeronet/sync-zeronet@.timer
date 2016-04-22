@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync zeronet users.json Minutely
+
+[Timer]
+OnCalendar=minutely
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

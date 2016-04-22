@@ -1,0 +1,23 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=sync-zeronet-timer
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Sync zeronet users.json Minutely"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'zeronet-git')
+arch=('any')
+source=('sync-zeronet@.timer'
+        'sync-zeronet@.service'
+        'sync-zeronet.sh')
+
+md5sums=('0a6a5ea001c616688134dac9177c347e'
+         'cb2b3099c21b1b49fcb29baa8f9c5b84'
+         '87e71d98b2d89368d9eba5ecf3087726')
+
+package() {
+    install -Dm644 "$srcdir/sync-zeronet@.service" "$pkgdir/etc/systemd/system/sync-zeronet@.service"
+    install -Dm644 "$srcdir/sync-zeronet@.timer" "$pkgdir/etc/systemd/system/sync-zeronet@.timer"
+    install -Dm755 "$srcdir/sync-zeronet.sh" "$pkgdir/usr/bin/sync-zeronet.sh"
+}
