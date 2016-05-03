@@ -1,5 +1,5 @@
 pkgname=my-poweroff
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=1
 pkgdesc="Use my poweroff"
 url="https://github.com/yang-ling/little"
@@ -7,10 +7,13 @@ license=('GPL')
 groups=()
 depends=('bash' 'my-devmon')
 arch=('any')
-source=('my-poweroff.sh')
+source=('my-poweroff.sh'
+'my-reboot.sh')
 
-md5sums=('bc06abe6580283a03430831b15e4a97d')
+md5sums=('bc06abe6580283a03430831b15e4a97d'
+         '9d5d9642a9bf65feff1caee94c151b1c')
 
 package() {
     install -Dm755 "$srcdir/my-poweroff.sh" "$pkgdir/usr/bin/my-poweroff.sh"
+    install -Dm755 "$srcdir/my-reboot.sh" "$pkgdir/usr/bin/my-reboot.sh"
 }

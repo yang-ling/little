@@ -1,0 +1,16 @@
+pkgname=fix-sogou
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Remove autostart script of sogou"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'fcitx-sogoupinyin')
+arch=('any')
+source=('fix-sogou.sh')
+
+md5sums=('b68763673803c8e870391009b01e3ee4')
+
+package() {
+    install -Dm755 "$srcdir/fix-sogou.sh" "$pkgdir/usr/bin/fix-sogou.sh"
+}

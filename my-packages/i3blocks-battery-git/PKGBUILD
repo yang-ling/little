@@ -1,7 +1,7 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=i3blocks-battery-git
 _pkgname=i3blocks-battery
-pkgver=r6.9321937
+pkgver=r7.11354a1
 pkgrel=1
 pkgdesc="i3blocks blocklet script to output the current status of your battery"
 arch=('any')
