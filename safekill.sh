@@ -65,6 +65,7 @@ killSogou() {
             is_sogou_running="false"
             echoInfo "Sogou is not running or is killed"
         fi
+        sleep 1
     done
     echoHeader "Sogou killing job done."
 }
