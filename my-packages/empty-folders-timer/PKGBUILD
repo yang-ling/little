@@ -1,5 +1,5 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
-pkgname=empty-folders
+pkgname=empty-folders-timer
 pkgver=1.0.0
 pkgrel=1
 pkgdesc="Empty Folders Timer. Daily"

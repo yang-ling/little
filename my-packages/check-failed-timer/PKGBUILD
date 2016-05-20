@@ -1,0 +1,23 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=check-failed-timer
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Check Failed Timer. Hourly"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash')
+arch=('any')
+source=('check-failed.service'
+        'check-failed.timer'
+        'check-failed-units.sh')
+
+md5sums=('d8ed6580436723dcaec7810a4fe899e4'
+         'd9dd8f37c4b20e0765419a25f547751c'
+         'd723502d4684b9b86613f20c265c8200')
+
+package() {
+    install -Dm644 "$srcdir/check-failed.service" "$pkgdir/etc/systemd/user/check-failed.service"
+    install -Dm644 "$srcdir/check-failed.timer" "$pkgdir/etc/systemd/user/check-failed.timer"
+    install -Dm755 "$srcdir/check-failed-units.sh" "$pkgdir/usr/bin/check-failed-units"
+}
