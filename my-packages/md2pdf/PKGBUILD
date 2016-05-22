@@ -1,0 +1,16 @@
+pkgname=md2pdf
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Use pandoc to convert Markdown to PDF"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'pandoc' 'texlive-bin')
+arch=('any')
+source=('md2pdf.sh')
+
+md5sums=('96deb21af3b3bab2a49751f89d463e51')
+
+package() {
+    install -Dm755 "$srcdir/md2pdf.sh" "$pkgdir/usr/bin/md2pdf"
+}
