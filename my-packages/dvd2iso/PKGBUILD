@@ -1,52 +1,16 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
-
-# Maintainer: Your Name <youremail@domain.com>
-pkgname=NAME
-pkgver=VERSION
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=dvd2iso
+pkgver=1.0.0
 pkgrel=1
-epoch=
-pkgdesc=""
-arch=()
-url=""
+pkgdesc="Read DVD and make ISO"
+arch=('any')
+url="https://github.com/yang-ling/little"
 license=('GPL')
-groups=()
-depends=()
-makedepends=()
-checkdepends=()
-optdepends=()
-provides=()
-conflicts=()
-replaces=()
-backup=()
-options=()
-install=
-changelog=
-source=("$pkgname-$pkgver.tar.gz"
-        "$pkgname-$pkgver.patch")
-noextract=()
-md5sums=()
-validpgpkeys=()
-
-prepare() {
-	cd "$pkgname-$pkgver"
-	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
-}
-
-build() {
-	cd "$pkgname-$pkgver"
-	./configure --prefix=/usr
-	make
-}
-
-check() {
-	cd "$pkgname-$pkgver"
-	make -k check
-}
+depends=('bash' 'util-linux')
+provides=('dvd2iso')
+source=("dvd2iso")
+md5sums=('d93a9ce72da6f074397898a67db644d7')
 
 package() {
-	cd "$pkgname-$pkgver"
-	make DESTDIR="$pkgdir/" install
+    install -Dm644 "$srcdir/dvd2iso" "$pkgdir/usr/bin/dvd2iso"
 }
