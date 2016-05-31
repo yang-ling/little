@@ -1,0 +1,66 @@
+#/usr/bin/env bash
+
+usage="$(basename "$0") [options] iso_file_name
+
+options:
+    -h|--help                           show this help text
+
+Example:
+    1. Insert DVD
+    2. $(basename "$0") myiso
+    3. It will generate myiso.iso in current folder"
+
+options=$(getopt -o h --long "help" -- "$@")
+[ $? -eq 0 ] || {
+    echo "Incorrect options provided"
+    echo "$usage"
+    exit 1
+}
+
+eval set -- "$options"
+
+isoname=''
+
+while test $# -gt 0; do
+  case "$1" in
+      -h|--help)
+          echo "$usage"
+          exit 0
+          ;;
+      --)
+          isoname=$2
+          # In this case branch, the $2 may be empty and parameter could be only one, which means only `--'
+          # If so and if we do shift 2, the $# will always be 1, thus cause infinite loop.
+          # So we need check parameter number here and do proper shift.
+          # In other case branches, the $2 will never be empty because we use `getopt' and it can check it for us.
+          # So we needn't do such check in other case branches.
+          if [[ $# -eq 1 ]]; then
+              shift 1
+          else
+              shift 2;
+          fi
+          ;;
+      *)
+          # In most cases, `getopt' will check incorrect options for us, but if
+          # incorrect options appears after `--', `getopt' cannot detect that,
+          # so we need this case branch to catch such error.
+          # For example: print.sh -- filename.pdf -z
+          # -z is an incorrect option but `getopt' cannot detect it.
+          echo "Incorrect options provided: $1"
+          echo "$usage"
+          exit 1
+          ;;
+  esac
+done
+
+if [ -z "$isoname" ]; then
+    echo "No ISO file name specified"
+    echo "$usage"
+    exit 1
+fi
+
+set -e
+blocks=$(isosize -d 2048 /dev/sr0)
+dd if=/dev/sr0 of=$isoname.iso bs=2048 count=$blocks
+
+# vim: ft=sh
