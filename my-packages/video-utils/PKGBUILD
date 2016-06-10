@@ -1,0 +1,22 @@
+pkgname=video-utils
+pkgver=1.0.2
+pkgrel=1
+pkgdesc="Video Utils"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'ffmpeg')
+arch=('any')
+source=('myff2pass.sh'
+        'myffconv.sh'
+        'myffconcat.sh')
+
+md5sums=('4a6a21ed7c865d91a2c4552e5ba44f8e'
+         '5f9e40fe802aa7f393d530924d317906'
+         '5e718cd0fb915af830a0a7825b45c390')
+
+package() {
+    install -Dm755 "$srcdir/myff2pass.sh" "$pkgdir/usr/bin/myff2pass.sh"
+    install -Dm755 "$srcdir/myffconv.sh" "$pkgdir/usr/bin/myffconv.sh"
+    install -Dm755 "$srcdir/myffconcat.sh" "$pkgdir/usr/bin/myffconcat.sh"
+}
