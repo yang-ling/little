@@ -3,7 +3,7 @@
 options=$(getopt -o i:s:t:o: -- "$@")
 
 [ $? -eq 0 ] || {
-    echoError "Incorrect options provided"
+    echo "Incorrect options provided"
     exit 1
 }
 
