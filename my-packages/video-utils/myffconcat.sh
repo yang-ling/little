@@ -9,10 +9,10 @@ rm -rf $FILENAME
 content=""
 
 while test $# -gt 0; do
-  content="${content}${1}\n"
+  content="${content}file ${1}\n"
   shift 1
 done
 
-echo "${content}" > $FILENAME
+echo -e "${content}" > $FILENAME
 
 ffmpeg -f concat -i $FILENAME -c copy output.mp4
