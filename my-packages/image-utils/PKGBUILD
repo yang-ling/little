@@ -1,5 +1,5 @@
 pkgname=image-utils
-pkgver=1.0.5
+pkgver=1.0.14
 pkgrel=2
 pkgdesc="Image Utils"
 url="https://github.com/yang-ling/little"
@@ -10,7 +10,7 @@ arch=('any')
 source=('rename-image-by-time.sh'
         )
 
-md5sums=('0c1fce7711ec9b627bc8bcf52e1e269a')
+md5sums=('e04dd0f97d111bc1d6364d8c58b44499')
 
 package() {
     install -Dm755 "$srcdir/rename-image-by-time.sh" "$pkgdir/usr/bin/rename-image-by-time.sh"
