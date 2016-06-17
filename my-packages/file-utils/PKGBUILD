@@ -5,7 +5,7 @@ pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
 license=('GPL')
 groups=()
-depends=('bash' 'perl-image-exiftool' 'xdg-utils')
+depends=('bash' 'perl-image-exiftool' 'xdg-utils' 'exiv2')
 arch=('any')
 source=('rename-file-by-time.sh'
         )
