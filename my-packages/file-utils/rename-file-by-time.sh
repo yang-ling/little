@@ -71,7 +71,9 @@ rename_one_file() {
     echoSection ">>> Start process ${filename} <<<"
 
     checkFileType "${filename}"
-    [[ $isImage -eq 0 ]] && [[ $isVideo -eq 0 ]] && {  echoWarning "${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}"; return;  }
+    [[ $isImage -eq 0 ]] && [[ $isVideo -eq 0 ]] && {  echoWarning "${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}"; \
+        echo "$(pwd)/${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}" >> "${log_file}"; \
+        return;  }
 
     extension="${filename##*.}"
 
