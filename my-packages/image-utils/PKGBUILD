@@ -1,16 +1,16 @@
 pkgname=image-utils
-pkgver=1.0.4
-pkgrel=1
+pkgver=1.0.5
+pkgrel=2
 pkgdesc="Image Utils"
 url="https://github.com/yang-ling/little"
 license=('GPL')
 groups=()
-depends=('bash' 'imagemagick')
+depends=('bash' 'imagemagick' 'xdg-utils')
 arch=('any')
 source=('rename-image-by-time.sh'
         )
 
-md5sums=('caddc2ee607920ec523e161f66f8683d')
+md5sums=('0c1fce7711ec9b627bc8bcf52e1e269a')
 
 package() {
     install -Dm755 "$srcdir/rename-image-by-time.sh" "$pkgdir/usr/bin/rename-image-by-time.sh"
