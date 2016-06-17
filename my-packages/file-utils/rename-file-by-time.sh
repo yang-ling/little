@@ -28,13 +28,6 @@ echoError()
     echo -e "\033[0;31m${1}\033[0m"
 }
 
-isfolder=0
-isImage=0
-isVideo=0
-
-SUPPRT_IMG_FILETYPES="image/png image/jpeg"
-SUPPRT_VIDEO_FILETYPES="video/mp4 video/quicktime"
-
 checkFileType() {
     filename="${1}"
 
@@ -82,7 +75,6 @@ rename_one_file() {
 
     extension="${filename##*.}"
 
-    basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
     if [[ $isImage -eq 1 ]]; then
         basefilename=$(exiftool -DateTimeOriginal "${filename}" | tr -s ' ' | cut -d ' ' -f 4,5 --output-delimiter=_ | tr ':' '-')
         if [[ -z "${basefilename}" ]]; then
@@ -93,6 +85,21 @@ rename_one_file() {
         basefilename=$(exiftool -MediaCreateDate "${filename}" | tr -s ' ' | cut -d ' ' -f 5,6 --output-delimiter=_ | tr ':' '-')
     else
         echoError "Error! You are not supposed to be here!"
+        exit 1;
+    fi
+    if [[ -z "${basefilename}" ]]; then
+        set +e
+        exiv2 "${filename}" > /dev/null 2>&1
+        if [[ $? -ne 0 ]]; then
+            echoWarning "${filename} image EXIF cannot be found. Use file creation time instead."
+            basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
+            echo "${filename} image EXIF cannot be found. Use file creation time instead. New name is $(pwd)/${basefilename}.${extension}" >> "${log_file}"
+        else
+            echoError "${filename} image creation date cannot be found but has EXIF. You need check this file."
+            echo "$(pwd)/${filename} image creation date cannot be found. You need check this file." >> "${log_file}"
+            exit 1
+        fi
+        set -e
     fi
     newname="${basefilename}.${extension}"
 
@@ -129,6 +136,16 @@ rename_files_in_dir() {
 }
 
 echoHeader "> Start process... <"
+
+isfolder=0
+isImage=0
+isVideo=0
+
+SUPPRT_IMG_FILETYPES="image/png image/jpeg"
+SUPPRT_VIDEO_FILETYPES="video/mp4 video/quicktime"
+log_file="$(pwd)/rename.log"
+rm -rf "${log_file}"
+touch "${log_file}"
 
 filename="${1}"
 
