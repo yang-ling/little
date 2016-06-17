@@ -73,7 +73,6 @@ rename_files_in_dir() {
     echo ">> Start process dir $1 <<"
     pushd "$1"
     for oneFile in *; do
-        oneFile=$(printf "%q" "$oneFile")
         if [[ -d $oneFile ]]; then
             rename_files_in_dir "$oneFile"
         else
@@ -86,7 +85,7 @@ rename_files_in_dir() {
 
 echo "> Start process... <"
 
-filename=$(printf "%q" "$1")
+filename="${1}"
 
 if [[ -f "${filename}" ]]; then
  isfolder=0
