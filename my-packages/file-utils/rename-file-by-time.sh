@@ -84,7 +84,13 @@ rename_one_file() {
 
     basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
     if [[ $isImage -eq 1 ]]; then
+        set +e
         basefilename=$(exiftool -DateTimeOriginal "${filename}" | tr -s ' ' | cut -d ' ' -f 4,5 --output-delimiter=_ | tr ':' '-')
+        set -e
+        if [[ $? -ne 0 ]]; then
+            basefilename=$(exiftool -ModifyDate "${filename}" | tr -s ' ' | cut -d ' ' -f 4,5 --output-delimiter=_ | tr ':' '-')
+        fi
+
     elif [[ $isVideo -eq 1 ]]; then
         basefilename=$(exiftool -MediaCreateDate "${filename}" | tr -s ' ' | cut -d ' ' -f 5,6 --output-delimiter=_ | tr ':' '-')
     else
