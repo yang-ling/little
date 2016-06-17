@@ -2,19 +2,52 @@
 
 set -e
 
-isfolder=0
-isTargetFileType=0
+echoHeader()
+{
+    # Blue, underline
+    echo -e "\033[0;34;4m${1}\033[0m"
+}
+echoSection()
+{
+    # White background and black font
+    echo -e "\033[47;30m${1}\033[0m"
+}
+echoInfo()
+{
+    # Green
+    echo -e "\033[0;32m${1}\033[0m"
+}
+echoWarning()
+{
+    # Yellow
+    echo -e "\033[0;33m${1}\033[0m"
+}
+echoError()
+{
+    # Red
+    echo -e "\033[0;31m${1}\033[0m"
+}
 
-SUPPRT_FILETYPES="image/png image/jpeg video/mp4 video/quicktime"
+isfolder=0
+isImage=0
+isVideo=0
+
+SUPPRT_IMG_FILETYPES="image/png image/jpeg"
+SUPPRT_VIDEO_FILETYPES="video/mp4 video/quicktime"
 
 checkFileType() {
     filename="${1}"
 
     filetype=$(xdg-mime query filetype "${filename}")
-    if [[ $SUPPRT_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
-        isTargetFileType=1
+    if [[ $SUPPRT_IMG_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
+        isImage=1
+        isVideo=0
+    elif [[ $SUPPRT_VIDEO_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
+        isImage=0
+        isVideo=1
     else
-        isTargetFileType=0
+        isImage=0
+        isVideo=0
     fi
 
 }
@@ -42,37 +75,45 @@ generateSequence() {
 
 rename_one_file() {
     filename="$1"
-    echo ">>> Start process ${filename} <<<"
+    echoSection ">>> Start process ${filename} <<<"
 
     checkFileType "${filename}"
-    [[ isTargetFileType -eq 0 ]] && {  echo "${filename} renaming failed: Only support ${SUPPRT_FILETYPES}, but got ${filetype}"; return;  }
+    [[ $isImage -eq 0 ]] && [[ $isVideo -eq 0 ]] && {  echoWarning "${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}"; return;  }
 
     extension="${filename##*.}"
 
     basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
+    if [[ $isImage -eq 1 ]]; then
+        basefilename=$(exiftool -DateTimeOriginal "${filename}" | tr -s ' ' | cut -d ' ' -f 4,5 --output-delimiter=_ | tr ':' '-')
+    elif [[ $isVideo -eq 1 ]]; then
+        basefilename=$(exiftool -MediaCreateDate "${filename}" | tr -s ' ' | cut -d ' ' -f 5,6 --output-delimiter=_ | tr ':' '-')
+    else
+        echoError "Error! You are not supposed to be here!"
+    fi
     newname="${basefilename}.${extension}"
 
-    [[ "${filename}" == "${newname}" ]] && { echo "${filename} and ${newname} are the same file. Skip."; return; }
+    [[ "${filename}" == "${newname}" ]] && { echoWarning "${filename} and ${newname} are the same file. Skip."; return; }
 
     if [[ -f "${newname}" ]]; then
         isSameFile "${filename}" "${newname}"
         if [[ isSame -eq 1 ]]; then
-            echo "${filename} and ${newname} are the same file. Skip."
+            echoWarning "${filename} and ${newname} are the same file. Skip."
             return
         fi
         generateSequence "${newname}"
     fi
 
-    echo "Renaming ${filename} --> ${newname}"
+    echoInfo "Renaming ${filename} --> ${newname}"
     mv -iv "${filename}" "${newname}"
-    echo "Renaming is successful!"
-    echo ">>> End process ${filename} <<<"
+    echoInfo "Renaming is successful!"
+    echoSection ">>> End process ${filename} <<<"
 }
 
 rename_files_in_dir() {
-    echo ">> Start process dir $1 <<"
+    echoSection ">> Start process dir $1 <<"
     pushd "$1"
     for oneFile in *; do
+        [[ "${oneFile}" == "*" ]] && { echoWarning "$1 is an empty folder."; break; }
         if [[ -d $oneFile ]]; then
             rename_files_in_dir "$oneFile"
         else
@@ -80,10 +121,10 @@ rename_files_in_dir() {
         fi
     done
     popd
-    echo ">> End process dir $1 <<"
+    echoSection ">> End process dir $1 <<"
 }
 
-echo "> Start process... <"
+echoHeader "> Start process... <"
 
 filename="${1}"
 
@@ -102,4 +143,4 @@ else
     rename_files_in_dir "${filename}"
 fi
 
-echo "> End process <"
+echoHeader "> End process <"

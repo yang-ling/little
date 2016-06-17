@@ -1,16 +1,16 @@
 pkgname=file-utils
-pkgver=1.0.1
-pkgrel=1
+pkgver=1.0.4
+pkgrel=2
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
 license=('GPL')
 groups=()
-depends=('bash' 'imagemagick' 'xdg-utils')
+depends=('bash' 'perl-image-exiftool' 'xdg-utils')
 arch=('any')
 source=('rename-file-by-time.sh'
         )
 
-md5sums=('2c21edb9a08f56b5e4b2fbe7c0499ff7')
+md5sums=('4566e04ad315dd4a8236a64ef718729b')
 
 package() {
     install -Dm755 "$srcdir/rename-file-by-time.sh" "$pkgdir/usr/bin/rename-file-by-time.sh"
