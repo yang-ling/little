@@ -1,6 +1,6 @@
 pkgname=file-utils
-pkgver=1.0.13
-pkgrel=2
+pkgver=1.0.14
+pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
 license=('GPL')
@@ -10,7 +10,7 @@ arch=('any')
 source=('rename-file-by-time.sh'
         )
 
-md5sums=('29e41e1c6b4ea93044a4a8bf93a6aed8')
+md5sums=('57356a3953d13ab37830489e25b38832')
 
 package() {
     install -Dm755 "$srcdir/rename-file-by-time.sh" "$pkgdir/usr/bin/rename-file-by-time.sh"
