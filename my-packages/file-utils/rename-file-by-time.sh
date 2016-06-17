@@ -3,18 +3,18 @@
 set -e
 
 isfolder=0
-isImage=0
+isTargetFileType=0
 
-SUPPRT_FILETYPES="image/png image/jpeg"
+SUPPRT_FILETYPES="image/png image/jpeg video/mp4 video/quicktime"
 
 checkFileType() {
     filename="${1}"
 
     filetype=$(xdg-mime query filetype "${filename}")
     if [[ $SUPPRT_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
-        isImage=1
+        isTargetFileType=1
     else
-        isImage=0
+        isTargetFileType=0
     fi
 
 }
@@ -45,7 +45,7 @@ rename_one_file() {
     echo ">>> Start process ${filename} <<<"
 
     checkFileType "${filename}"
-    [[ isImage -eq 0 ]] && {  echo "${filename} renaming failed: Only support png and jpg files, but got ${filetype}"; return;  }
+    [[ isTargetFileType -eq 0 ]] && {  echo "${filename} renaming failed: Only support ${SUPPRT_FILETYPES}, but got ${filetype}"; return;  }
 
     extension="${filename##*.}"
 
