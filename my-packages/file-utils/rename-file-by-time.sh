@@ -32,15 +32,22 @@ checkFileType() {
     filename="${1}"
 
     filetype=$(xdg-mime query filetype "${filename}")
-    if [[ $SUPPRT_IMG_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
+    if [[ $SUPPORT_IMG_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
         isImage=1
         isVideo=0
-    elif [[ $SUPPRT_VIDEO_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
+        isAudio=0
+    elif [[ $SUPPORT_VIDEO_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
         isImage=0
         isVideo=1
+        isAudio=0
+    elif [[ $SUPPORT_AUDIO_FILETYPES =~ (^|[[:space:]])"$filetype"($|[[:space:]]) ]]; then
+        isImage=0
+        isVideo=0
+        isAudio=1
     else
         isImage=0
         isVideo=0
+        isAudio=0
     fi
 
 }
@@ -71,8 +78,8 @@ rename_one_file() {
     echoSection ">>> Start process ${filename} <<<"
 
     checkFileType "${filename}"
-    [[ $isImage -eq 0 ]] && [[ $isVideo -eq 0 ]] && {  echoWarning "${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}"; \
-        echo "$(pwd)/${filename} renaming failed: Only support ${SUPPRT_IMG_FILETYPES} and ${SUPPRT_VIDEO_FILETYPES}, but got ${filetype}" >> "${log_file}"; \
+    [[ $isImage -eq 0 ]] && [[ $isVideo -eq 0 ]] && [[ isAudio -eq 0 ]]&& {  echoWarning "${filename} renaming failed: Only support ${SUPPORT_IMG_FILETYPES}, ${SUPPORT_AUDIO_FILETYPES} and ${SUPPORT_VIDEO_FILETYPES}, but got ${filetype}"; \
+        echo "$(pwd)/${filename} renaming failed: Only support ${SUPPORT_IMG_FILETYPES}, ${SUPPORT_AUDIO_FILETYPES} and ${SUPPORT_VIDEO_FILETYPES}, but got ${filetype}" >> "${log_file}"; \
         return;  }
 
     extension="${filename##*.}"
@@ -85,6 +92,8 @@ rename_one_file() {
 
     elif [[ $isVideo -eq 1 ]]; then
         basefilename=$(exiftool -MediaCreateDate "${filename}" | tr -s ' ' | cut -d ' ' -f 5,6 --output-delimiter=_ | tr ':' '-')
+    elif [[ $isAudio -eq 1 ]]; then
+        basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
     else
         echoError "Error! You are not supposed to be here!"
         exit 1;
@@ -94,13 +103,12 @@ rename_one_file() {
         exiv2 "${filename}" > /dev/null 2>&1
         if [[ $? -ne 0 ]]; then
             echoWarning "${filename} image EXIF cannot be found. Use file creation time instead."
-            basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
             echo "${filename} image EXIF cannot be found. Use file creation time instead. New name is $(pwd)/${basefilename}.${extension}" >> "${log_file}"
         else
             echoError "${filename} image creation date cannot be found but has EXIF. You need check this file."
-            basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
             echo "Attention! $(pwd)/${filename} image creation date cannot be found. You need check this file. New name is $(pwd)/${basefilename}.${extension}" >> "${log_file}"
         fi
+        basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
         set -e
     fi
     newname="${basefilename}.${extension}"
@@ -128,6 +136,7 @@ rename_files_in_dir() {
     for oneFile in *; do
         [[ "${oneFile}" == "*" ]] && { echoWarning "$1 is an empty folder."; break; }
         if [[ -d $oneFile ]]; then
+            [[ $isRecursive -eq 0 ]] && { echoInfo "No Recursive. Skip ${oneFile}"; continue; }
             rename_files_in_dir "$oneFile"
         else
             rename_one_file "$oneFile"
@@ -143,27 +152,59 @@ isfolder=0
 isImage=0
 isVideo=0
 
-SUPPRT_IMG_FILETYPES="image/png image/jpeg"
-SUPPRT_VIDEO_FILETYPES="video/mp4 video/quicktime"
+SUPPORT_IMG_FILETYPES="image/png image/jpeg"
+SUPPORT_VIDEO_FILETYPES="video/mp4 video/quicktime"
+SUPPORT_AUDIO_FILETYPES="audio/mpeg"
 log_file="$(pwd)/rename.log"
-rm -rf "${log_file}"
-touch "${log_file}"
+isRecursive=0
 
-filename="${1}"
+usage="$(basename "$0") [options] <file name|directory name> ...\n
 
-if [[ -f "${filename}" ]]; then
- isfolder=0
- elif [[ -d "${filename}" ]]; then
-     isfolder=1
- else
-     echo "${filename} is not found!"
-     exit 1
-fi
+Options:\n
+    \t-h|--help\t                           show this help text\n
+    \t-r\t\t                                  Recursive\n
 
-if [[ $isfolder -eq 0 ]]; then
-    rename_one_file "${filename}"
-else
-    rename_files_in_dir "${filename}"
-fi
+File name or directory name: Target file or directory.\n
+If it is directory, all files under this directory will be processed.\n
+If -r is specified, all sub-directories also will be processed.\n
 
+Support file type:\n
+\t${SUPPORT_IMG_FILETYPES}\n
+\t${SUPPORT_VIDEO_FILETYPES}\n
+\t${SUPPORT_AUDIO_FILETYPES}\n"
+
+
+while test $# -gt 0 ; do
+    case "$1" in
+        -r)
+            isRecursive=1
+            shift 1
+            ;;
+        -h|--help)
+            echo -e $usage
+            exit 0
+            ;;
+        *)
+            rm -rf "${log_file}"
+            touch "${log_file}"
+            filename="${1}"
+            if [[ -f "${filename}" ]]; then
+                isfolder=0
+            elif [[ -d "${filename}" ]]; then
+                isfolder=1
+            else
+                echoError "${filename} is not found!"
+                exit 1
+            fi
+
+            if [[ $isfolder -eq 0 ]]; then
+                rename_one_file "${filename}"
+            else
+                rename_files_in_dir "${filename}"
+            fi
+
+            shift 1
+
+    esac
+done
 echoHeader "> End process <"
