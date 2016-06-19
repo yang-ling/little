@@ -1,5 +1,5 @@
 pkgname=my-devmon
-pkgver=2
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="Use my devmon"
 url="https://github.com/yang-ling/little"
@@ -11,7 +11,7 @@ source=('devmon@.service'
         'clean-umounted.sh')
 
 md5sums=('dc2cb728dbf470ac4cc1466f29af9ea3'
-         '995f8cd576b68b4193fef7728915a799')
+         '7fd28022effe0addb5ebfa69bba674ad')
 
 package() {
     install -Dm644 "$srcdir/devmon@.service" "$pkgdir/etc/systemd/system/devmon@.service"
