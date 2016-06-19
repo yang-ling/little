@@ -2,7 +2,7 @@
 
 set -ex
 VIDEO_FOLDER=$1
-CAPTURE_FOLDER=$1
+CAPTURE_FOLDER=$2
 
 cd "$VIDEO_FOLDER"
 for file in *.mp4
