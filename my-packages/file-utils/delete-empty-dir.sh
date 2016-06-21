@@ -49,10 +49,13 @@ process_one_dir() {
     set +e
     if [[ $isDryRun -eq 0 ]] && [[ -n "${targetDir}" ]]; then
         rmdir "${targetDir}"
-        echoInfo "${targetDir} is deleted."
-        echo "${targetDir} is deleted." >> "${LOG_FILE}"
-
-        [[ $? -eq 0 ]] || { echoError "${targetDir} is not empty!"; }
+        if [[ $? -eq 0 ]]; then
+            echoInfo "${targetDir} is deleted."
+            echo "${targetDir} is deleted." >> "${LOG_FILE}"
+        else
+            echoError "${targetDir} is not empty!"
+            echo "Error!: ${targetDir} is not empty!" >> "${LOG_FILE}"
+        fi
     fi
     set -e
     targetDir=""
