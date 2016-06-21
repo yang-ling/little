@@ -1,5 +1,5 @@
 pkgname=file-utils
-pkgver=1.1.4
+pkgver=1.2.1
 pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
@@ -8,12 +8,15 @@ groups=()
 depends=('bash' 'perl-image-exiftool' 'xdg-utils' 'exiv2')
 arch=('any')
 source=('rename-file-by-time.sh'
-        'delete-duplicated-files.sh')
+        'delete-duplicated-files.sh'
+        'delete-empty-dir.sh')
 
-md5sums=('dbcb4f4db9aa38bb41f48ddf00020af0'
-         '8a407a81090ca159e336187c93038737')
+md5sums=('6b2107c10a4a624dcb80677c48edd7ec'
+         '8a407a81090ca159e336187c93038737'
+         'dd67dbeefa1a7d9bb42201d20e770f08')
 
 package() {
     install -Dm755 "$srcdir/rename-file-by-time.sh" "$pkgdir/usr/bin/rename-file-by-time.sh"
     install -Dm755 "$srcdir/delete-duplicated-files.sh" "$pkgdir/usr/bin/delete-duplicated-files.sh"
+    install -Dm755 "$srcdir/delete-empty-dir.sh" "$pkgdir/usr/bin/delete-empty-dir.sh"
 }
