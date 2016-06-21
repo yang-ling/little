@@ -1,5 +1,5 @@
 pkgname=video-utils
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc="Video Utils"
 url="https://github.com/yang-ling/little"
@@ -17,7 +17,7 @@ md5sums=('4a6a21ed7c865d91a2c4552e5ba44f8e'
          '5f9e40fe802aa7f393d530924d317906'
          'dde7b585ddce41cdbd2a054a6ccb312b'
          'ac87e678dbd8e0812d431cc605d75bc3'
-         '4a065b74f6fe976de8d1fc9ef0db7355')
+         '1a3ffc6a6438844517085779e81c0c86')
 
 package() {
     install -Dm755 "$srcdir/myff2pass.sh" "$pkgdir/usr/bin/myff2pass.sh"
