@@ -125,6 +125,7 @@ rename_one_file() {
     fi
 
     echoInfo "Renaming ${filename} --> ${newname}"
+    echo "Renaming $(pwd)/${filename} --> $(pwd)/${newname}" >> "${log_file}"
     mv -iv "${filename}" "${newname}"
     echoInfo "Renaming is successful!"
     echoSection ">>> End process ${filename} <<<"
