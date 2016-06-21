@@ -99,6 +99,7 @@ rename_one_file() {
         exit 1;
     fi
     if [[ -z "${basefilename}" ]]; then
+        basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
         set +e
         exiv2 "${filename}" > /dev/null 2>&1
         if [[ $? -ne 0 ]]; then
@@ -108,7 +109,6 @@ rename_one_file() {
             echoError "${filename} image creation date cannot be found but has EXIF. You need check this file."
             echo "Attention! $(pwd)/${filename} image creation date cannot be found. You need check this file. New name is $(pwd)/${basefilename}.${extension}" >> "${log_file}"
         fi
-        basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
         set -e
     fi
     newname="${basefilename}.${extension}"
