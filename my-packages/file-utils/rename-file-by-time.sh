@@ -153,7 +153,7 @@ isImage=0
 isVideo=0
 
 SUPPORT_IMG_FILETYPES="image/png image/jpeg"
-SUPPORT_VIDEO_FILETYPES="video/mp4 video/quicktime"
+SUPPORT_VIDEO_FILETYPES="video/mp4 video/quicktime application/octet-stream"
 SUPPORT_AUDIO_FILETYPES="audio/mpeg"
 log_file="$(pwd)/rename.log"
 isRecursive=0
