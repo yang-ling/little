@@ -98,7 +98,7 @@ rename_one_file() {
         echoError "Error! You are not supposed to be here!"
         exit 1;
     fi
-    if [[ -z "${basefilename}" ]]; then
+    if [[ -z "${basefilename}" ]] || [[ $(echo "${basefilename}" | cut -d '-' -f 1) -lt 2000 ]]; then
         basefilename=$(date -r "${filename}" +%F-%H%M%S%z)
         set +e
         exiv2 "${filename}" > /dev/null 2>&1

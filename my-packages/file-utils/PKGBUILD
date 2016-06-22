@@ -1,5 +1,5 @@
 pkgname=file-utils
-pkgver=1.2.2
+pkgver=1.2.3
 pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
@@ -11,7 +11,7 @@ source=('rename-file-by-time.sh'
         'delete-duplicated-files.sh'
         'delete-empty-dir.sh')
 
-md5sums=('6b2107c10a4a624dcb80677c48edd7ec'
+md5sums=('cfa82282f0f848890545b7e0c5a97263'
          '8a407a81090ca159e336187c93038737'
          '9ee788be6636ad6f4213cd0e0ea05651')
 
