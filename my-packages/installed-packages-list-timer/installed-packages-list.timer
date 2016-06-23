@@ -1,0 +1,9 @@
+[Unit]
+Description=List installed packages Timer. Daily
+
+[Timer]
+OnStartupSec=10m
+OnUnitActiveSec=24h
+
+[Install]
+WantedBy=timers.target

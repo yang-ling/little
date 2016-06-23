@@ -1,0 +1,24 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=installed-packages-list-timer
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Automatically record installed packages."
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash')
+arch=('any')
+source=('installed-packages-list.service'
+        'installed-packages-list.timer'
+        'list-installed-packages.sh'
+        )
+
+md5sums=('c43daff84cce3a7a727a1a55c59aed21'
+         'bd469ffdbb2b6640c68f75c3a176ae79'
+         'b290f34f40450ca65c355f0f4224d747')
+
+package() {
+    install -Dm644 "$srcdir/installed-packages-list.service" "$pkgdir/etc/systemd/user/installed-packages-list.service"
+    install -Dm644 "$srcdir/installed-packages-list.timer" "$pkgdir/etc/systemd/user/installed-packages-list.timer"
+    install -Dm755 "$srcdir/list-installed-packages.sh" "$pkgdir/usr/bin/list-installed-packages.sh"
+}

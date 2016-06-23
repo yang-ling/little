@@ -1,0 +1,11 @@
+[Unit]
+Description=List installed packages Service
+AssertFileIsExecutable=/usr/bin/list-installed-packages.sh
+AssertPathExists=%h/Dropbox/Work/installed-packages/
+
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/list-installed-packages.sh %h/Dropbox/Work/installed-packages/official-work %h/Dropbox/Work/installed-packages/aur-work
+IOSchedulingClass=idle
+IOSchedulingPriority=7
