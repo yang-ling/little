@@ -30,6 +30,7 @@ echoError()
 
 process_one_dir() {
     targetDir=""
+    needRepeat=0
     echoSection ">> Start process ${1} <<"
     pushd "${1}"
     for oneFile in *; do
@@ -46,12 +47,14 @@ process_one_dir() {
         fi
     done
     popd
+    [[ $needRepeat -eq 1 ]] && { echoInfo "Repeat $1"; process_one_dir "$1"; }
     set +e
     if [[ $isDryRun -eq 0 ]] && [[ -n "${targetDir}" ]]; then
         rmdir "${targetDir}"
         if [[ $? -eq 0 ]]; then
             echoInfo "${targetDir} is deleted."
             echo "${targetDir} is deleted." >> "${LOG_FILE}"
+            needRepeat=1
         else
             echoError "${targetDir} is not empty!"
             echo "Error!: ${targetDir} is not empty!" >> "${LOG_FILE}"
