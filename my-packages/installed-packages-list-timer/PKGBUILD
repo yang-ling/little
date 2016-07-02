@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=installed-packages-list-timer
-pkgver=1.0.1
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Automatically record installed packages."
 url="https://github.com/yang-ling/little"
@@ -13,9 +13,9 @@ source=('installed-packages-list.service'
         'list-installed-packages.sh'
         )
 
-md5sums=('c43daff84cce3a7a727a1a55c59aed21'
+md5sums=('1fb95948cc44bedbe025789a75a08b0b'
          'bd469ffdbb2b6640c68f75c3a176ae79'
-         'b290f34f40450ca65c355f0f4224d747')
+         '6535b0418e4b9dd77d923ab41b2e10ca')
 
 package() {
     install -Dm644 "$srcdir/installed-packages-list.service" "$pkgdir/etc/systemd/user/installed-packages-list.service"
