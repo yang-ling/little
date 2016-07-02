@@ -14,7 +14,7 @@ source=('myff2pass.sh'
         'create-captures.sh')
 
 md5sums=('4a6a21ed7c865d91a2c4552e5ba44f8e'
-         '5f9e40fe802aa7f393d530924d317906'
+         '435e023f1a28b6cc5c571a0327b47be3'
          'dde7b585ddce41cdbd2a054a6ccb312b'
          'ac87e678dbd8e0812d431cc605d75bc3'
          '1a3ffc6a6438844517085779e81c0c86')
