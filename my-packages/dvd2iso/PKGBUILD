@@ -1,7 +1,7 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=dvd2iso
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Read DVD and make ISO"
 arch=('any')
 url="https://github.com/yang-ling/little"
@@ -12,5 +12,5 @@ source=("dvd2iso")
 md5sums=('d93a9ce72da6f074397898a67db644d7')
 
 package() {
-    install -Dm644 "$srcdir/dvd2iso" "$pkgdir/usr/bin/dvd2iso"
+    install -Dm755 "$srcdir/dvd2iso" "$pkgdir/usr/bin/dvd2iso"
 }
