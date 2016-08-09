@@ -1,0 +1,35 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# See http://wiki.archlinux.org/index.php/Python_Package_Guidelines for more
+# information on Python packaging.
+
+# Upstream Maintainer: Alvin Jian <alvinchien0624@gmail.com>
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=my-python-autobgch
+pkgver=0.3.1.r5.g4013aab
+pkgrel=1
+pkgdesc="A simple and automatic wallpaper changer supporting various backends for Linux"
+arch=('any')
+url="https://github.com/yang-ling/auto_background_changer"
+license=('MIT')
+depends=('python')
+optdepends=('feh: lightweight window manager support')
+makedepends=('python-setuptools' 'git')
+source=("git+https://github.com/yang-ling/auto_background_changer.git")
+md5sums=('SKIP')
+conflicts=('python-autobgch')
+provides=('python-autobgch')
+_gitname="auto_background_changer"
+
+pkgver() {
+  cd "$srcdir/$_gitname"
+  echo $(git describe --always --long | sed 's/^[v]//;s/-/-r/' | tr - .)
+}
+
+package() {
+  cd "$srcdir/$_gitname"
+  python setup.py install --root="$pkgdir/" --optimize=1
+}
