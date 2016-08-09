@@ -9,7 +9,7 @@
 # Upstream Maintainer: Alvin Jian <alvinchien0624@gmail.com>
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-python-autobgch
-pkgver=0.3.1.r5.g4013aab
+pkgver=0.3.1.r8.g5601647
 pkgrel=1
 pkgdesc="A simple and automatic wallpaper changer supporting various backends for Linux"
 arch=('any')
