@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=arch-optimizer-timer
-pkgver=1.1
+pkgver=1.2
 pkgrel=1
 pkgdesc="Optimize archlinux monthly"
 url="https://github.com/yang-ling/little"
