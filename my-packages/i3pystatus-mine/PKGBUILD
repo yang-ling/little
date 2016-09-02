@@ -2,7 +2,7 @@
 
 pkgname=i3pystatus-mine-git
 pkgdesc="i3status replacement written in python for the i3 window manager"
-pkgver=3.33.r129.gb62732b
+pkgver=3.33.r488.gdb47bfb
 pkgrel=1
 conflicts=('i3pystatus')
 provides=('i3pystatus')
