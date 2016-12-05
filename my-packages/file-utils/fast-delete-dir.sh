@@ -23,11 +23,13 @@ echoError()
 usage="$(basename "$0") [options] directory_path
 
 options:
-    -h|--help                           show this help text"
+    -h|--help   show this help text
+    -k|--keep   Keep the root directory, only delete its content."
 
 dirname=''
+is_keep=0
 
-options=$(getopt -o h --long "help" -- "$@")
+options=$(getopt -o hk --long "help,keep" -- "$@")
 
 [ $? -eq 0 ] || {
     echo "Incorrect options provided"
@@ -39,6 +41,10 @@ eval set -- "$options"
 
 while test $# -gt 0; do
     case "$1" in
+        -k|--keep)
+            is_keep=1
+            shift 1
+            ;;
         -h|--help)
             echo "$usage"
             exit 0
@@ -53,7 +59,7 @@ while test $# -gt 0; do
             if [[ $# -eq 1 ]]; then
                 shift 1
             else
-                shift 2;
+                shift 2
             fi
             ;;
         *)
@@ -91,7 +97,9 @@ echoInfo "Temp directory is $tempdir"
 set -e
 
 rsync -a --delete --progress -h "$tempdir/" "$dirname/"
-rmdir "$dirname"
+if [[ $is_keep -eq 0 ]]; then
+    rmdir "$dirname"
+fi
 
 set +e
 
