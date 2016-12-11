@@ -1,0 +1,9 @@
+[Unit]
+Description=Delete notmuch deleted and spam mails Timer. Daily
+
+[Timer]
+OnStartupSec=4m
+OnUnitActiveSec=24h
+
+[Install]
+WantedBy=timers.target

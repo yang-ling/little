@@ -1,0 +1,26 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=my-notmuch-utils
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="A notmuch helper."
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'perl' 'notmuch' 'msmtp')
+arch=('any')
+source=('delete-mails.sh'
+        'my-send-mail.sh'
+        'delete-mails.timer'
+        'delete-mails.service')
+md5sums=('6ae9422f0d585a2d5bc3f859c607d3c2'
+         '1e5149e9ab91cc9f9cb2210601034cd0'
+         'cb15b9c2f13a99c95abd49583f2bca17'
+         'ebc284fc3d8633ed6528bdd7cf7ad7ef')
+
+
+package() {
+    install -Dm644 "$srcdir/delete-mails.service" "$pkgdir/etc/systemd/user/delete-mails.service"
+    install -Dm644 "$srcdir/delete-mails.timer" "$pkgdir/etc/systemd/user/delete-mails.timer"
+    install -Dm755 "$srcdir/my-send-mail.sh" "$pkgdir/usr/local/bin/my-send-mail.sh"
+    install -Dm755 "$srcdir/delete-mails.sh" "$pkgdir/usr/local/bin/delete-mails.sh"
+}
