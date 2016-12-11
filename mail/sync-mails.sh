@@ -54,6 +54,10 @@ main() {
         [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "offlineimap throws error!"; check_retry; }
         echo "Finish offlineimap!"
 
+        echo "Start notmuch new!"
+        notmuch new
+        echo "Finish notmuch new!"
+
         echo "Unlock lockfile!"
         dotlockfile -u "$LOCKFILE"
         echo "Unlock lockfile finished!"
