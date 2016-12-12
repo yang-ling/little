@@ -1,5 +1,5 @@
 pkgname=file-utils
-pkgver=1.2.6
+pkgver=1.2.7
 pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
@@ -10,11 +10,13 @@ arch=('any')
 source=('rename-file-by-time.sh'
         'delete-duplicated-files.sh'
         'delete-empty-dir.sh'
-        'fast-delete-dir.sh')
+        'fast-delete-dir.sh'
+        'xo.sh')
 md5sums=('cfa82282f0f848890545b7e0c5a97263'
          '8a407a81090ca159e336187c93038737'
          '29e4ec368012a0253528785cdeb62f83'
-         '2e2e847e1ceb327f7f425cba197c7032')
+         '2e2e847e1ceb327f7f425cba197c7032'
+         'ce9bca35e6c9b74d2f868dd47c4ea216')
 
 
 package() {
@@ -22,4 +24,5 @@ package() {
     install -Dm755 "$srcdir/delete-duplicated-files.sh" "$pkgdir/usr/local/bin/delete-duplicated-files.sh"
     install -Dm755 "$srcdir/delete-empty-dir.sh" "$pkgdir/usr/local/bin/delete-empty-dir.sh"
     install -Dm755 "$srcdir/fast-delete-dir.sh" "$pkgdir/usr/local/bin/fast-delete-dir.sh"
+    install -Dm755 "$srcdir/xo.sh" "$pkgdir/usr/local/bin/xo"
 }
