@@ -56,6 +56,7 @@ main() {
 
         echo "Start notmuch new!"
         notmuch new
+        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Notmuch throws error!"; check_retry; }
         echo "Finish notmuch new!"
 
         echo "Unlock lockfile!"
