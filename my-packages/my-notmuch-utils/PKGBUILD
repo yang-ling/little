@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-notmuch-utils
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="A notmuch helper."
 url="https://github.com/yang-ling/little"
@@ -12,7 +12,7 @@ source=('delete-mails.sh'
         'my-send-mail.sh'
         'delete-mails.timer'
         'delete-mails.service')
-md5sums=('6ae9422f0d585a2d5bc3f859c607d3c2'
+md5sums=('9703895ad3881e8c560bd5481bb66c79'
          '1e5149e9ab91cc9f9cb2210601034cd0'
          'cb15b9c2f13a99c95abd49583f2bca17'
          'ebc284fc3d8633ed6528bdd7cf7ad7ef')

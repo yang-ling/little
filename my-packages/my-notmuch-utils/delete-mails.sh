@@ -28,3 +28,4 @@ function delete-mails-with-spam-tag {
 
 delete-mails-with-deleted-tag
 delete-mails-with-spam-tag
+notmuch new
