@@ -1,0 +1,16 @@
+pkgname=my-update-mirror
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Mirror list updater"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'reflector')
+arch=('any')
+source=('updmr.sh')
+md5sums=('7dea39a9627dcd268f9e20892aea47e6')
+
+
+package() {
+    install -Dm755 "$srcdir/updmr.sh" "$pkgdir/usr/local/bin/updmr"
+}
