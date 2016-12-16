@@ -29,6 +29,9 @@ function delete-mails-with-spam-tag {
     done
 }
 
+echo "Start Delete Mails!"
+$notify_send_command "Start Delete Mails!"
+
 lock_notmuch 30
 [[ $? -eq 0 ]] || { exit 1; }
 
@@ -37,3 +40,6 @@ delete-mails-with-spam-tag
 $notmuch_command new
 
 unlock_notmuch
+
+echo "Finish Delete Mails!"
+$notify_send_command "Finish Delete Mails!"

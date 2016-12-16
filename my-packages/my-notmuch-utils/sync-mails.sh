@@ -37,3 +37,6 @@ unlock_notmuch
 echo "Unlock lockfile!"
 $dotlockfile_command -u "$LOCKFILE"
 echo "Unlock lockfile finished!"
+
+echo "Finish Sync Mails!"
+$notify_send_command "Finish Sync Mails!"
