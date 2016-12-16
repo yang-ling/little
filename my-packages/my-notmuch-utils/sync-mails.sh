@@ -5,7 +5,6 @@ source /usr/local/lib/my-notmuch-utils/commons.sh
 LOCKFILE=/tmp/sync-mails-dotfile
 
 echo "Start Sync Mails!"
-$notify_send_command "Start Sync Mails!"
 
 echo "Check lockfile $LOCKFILE"
 $dotlockfile_command -r 10 -l -p "$LOCKFILE"
@@ -24,6 +23,7 @@ $offlineimap_command -c ~/.config/offlineimap/offlineimap.conf
 echo "Finish offlineimap!"
 
 echo "Start notmuch new!"
+$notify_send_command "Start notmuch new!"
 lock_notmuch 1
 if [[ $? -eq 0 ]]; then
     $notmuch_command new
@@ -33,10 +33,11 @@ else
     sendWarning "Sync Mail" "Notmuch seems to be locked by others"
 fi
 unlock_notmuch
+echo "Finish notmuch new!"
+$notify_send_command "Finish notmuch new!"
 
 echo "Unlock lockfile!"
 $dotlockfile_command -u "$LOCKFILE"
 echo "Unlock lockfile finished!"
 
 echo "Finish Sync Mails!"
-$notify_send_command "Finish Sync Mails!"

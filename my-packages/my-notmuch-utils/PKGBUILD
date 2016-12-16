@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-notmuch-utils
-pkgver=1.0.11
+pkgver=1.0.12
 pkgrel=2
 pkgdesc="A notmuch helper."
 url="https://github.com/yang-ling/little"
@@ -22,7 +22,7 @@ md5sums=('e981d7c9c2819258859e8938207ddabd'
          'cb15b9c2f13a99c95abd49583f2bca17'
          'ba69bee6977fc3658d50e2fea9daa0c2'
          '40639daf7ee32910ed280174b4fc631d'
-         '67b2c903e7eb01d83c8447a9eae87ec9'
+         'fd4a145ccbe9180825e5624777b72c75'
          '2f0e81f1a419f5bdbb2ba8fe0ba2648e'
          '95999670582c908e3a131492da1ffc3d')
 
