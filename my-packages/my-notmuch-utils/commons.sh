@@ -4,7 +4,7 @@ export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch/notmuch-config
 NOTMUCH_LOCKFILE=/tmp/notmuch-lockfile
 
 notmuch_command=/usr/bin/notmuch
-dotlockfile_command= /usr/bin/dotlockfile
+dotlockfile_command=/usr/bin/dotlockfile
 notify_send_command=/usr/bin/notify-send
 perl_command=/usr/bin/perl
 mbsync_command=/usr/bin/mbsync
@@ -18,7 +18,7 @@ function sendWarning {
 function lock_notmuch {
     retry_count=${1:-10}
     echo "Check lockfile $NOTMUCH_LOCKFILE"
-    $dotlockfile_command -r $retry_count -l -p "$NOTMUCH_LOCKFILE"
+    $dotlockfile_command -l -r $retry_count -p "$NOTMUCH_LOCKFILE"
     if [[ $? -ne 0 ]]; then
         sendWarning "My Notmuch Locker" "Notmuch is in use!"
         return 1
