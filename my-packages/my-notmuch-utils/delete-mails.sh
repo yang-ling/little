@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-DELETED_TAG_THRESHOLD=7
-SPAM_TAG_THRESHOLD=30
+DELETED_TAG_THRESHOLD=${1:-7}
+SPAM_TAG_THRESHOLD=${2:-30}
 
 source /usr/local/lib/my-notmuch-utils/commons.sh
 
