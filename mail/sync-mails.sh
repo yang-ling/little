@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-sendWarning() {
-    echo "$2"
-    notify-send -t 5000 -u critical "$1" "$2"
-}
+source /usr/local/lib/my-notmuch-utils/commons.sh
 
 adddate() {
     while IFS= read -r line; do
