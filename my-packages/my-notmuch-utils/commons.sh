@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 export XDG_CONFIG_HOME=$HOME/.config
 export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch/notmuch-config
+export GNUPGHOME=$XDG_CONFIG_HOME/gnupg
+
 NOTMUCH_LOCKFILE=/tmp/notmuch-lockfile
 
 notmuch_command=/usr/bin/notmuch

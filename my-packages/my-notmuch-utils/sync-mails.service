@@ -5,6 +5,6 @@ AssertFileIsExecutable=/usr/local/lib/my-notmuch-utils/commons.sh
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/sync-mails.sh 5m 9999
+ExecStart=/usr/local/bin/sync-mails.sh
 IOSchedulingClass=idle
 IOSchedulingPriority=7
