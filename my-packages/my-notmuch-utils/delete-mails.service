@@ -1,6 +1,7 @@
 [Unit]
 Description=Delete notmuch deleted and spam mails Service
 AssertFileIsExecutable=/usr/local/bin/delete-mails.sh
+AssertFileIsExecutable=/usr/local/lib/my-notmuch-utils/commons.sh
 
 [Service]
 Type=oneshot

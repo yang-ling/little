@@ -1,0 +1,10 @@
+[Unit]
+Description=Synchronize mails  Service
+AssertFileIsExecutable=/usr/local/bin/sync-mails.sh
+AssertFileIsExecutable=/usr/local/lib/my-notmuch-utils/commons.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sync-mails.sh 5m 9999
+IOSchedulingClass=idle
+IOSchedulingPriority=7

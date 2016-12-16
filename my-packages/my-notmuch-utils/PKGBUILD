@@ -11,11 +11,20 @@ arch=('any')
 source=('delete-mails.sh'
         'my-send-mail.sh'
         'delete-mails.timer'
-        'delete-mails.service')
-md5sums=('39c836c73014ba1253d270d27baf3602'
+        'delete-mails.service'
+        'commons.sh'
+        'sync-mails.sh'
+        'sync-mails.service'
+        'sync-mails.timer'
+       )
+md5sums=('f3304cba92b63abda0f4e5285d937a31'
          '1e5149e9ab91cc9f9cb2210601034cd0'
          'cb15b9c2f13a99c95abd49583f2bca17'
-         'ebc284fc3d8633ed6528bdd7cf7ad7ef')
+         'ba69bee6977fc3658d50e2fea9daa0c2'
+         '58f960823f5de667d0a1deed28b70e5e'
+         '65b2f693270b61dd42b1aaf2869350e8'
+         'b123bada43ff5659e52c9aec811af44a'
+         '95999670582c908e3a131492da1ffc3d')
 
 
 package() {
@@ -23,4 +32,8 @@ package() {
     install -Dm644 "$srcdir/delete-mails.timer" "$pkgdir/etc/systemd/user/delete-mails.timer"
     install -Dm755 "$srcdir/my-send-mail.sh" "$pkgdir/usr/local/bin/my-send-mail.sh"
     install -Dm755 "$srcdir/delete-mails.sh" "$pkgdir/usr/local/bin/delete-mails.sh"
+    Install -Dm755 "$srcdir/commons.sh" "$pkgdir/usr/local/lib/my-notmuch-utils/commons.sh"
+    install -Dm755 "$srcdir/sync-mails.sh" "$pkgdir/usr/local/bin/sync-mails.sh"
+    install -Dm644 "$srcdir/sync-mails.service" "$pkgdir/etc/systemd/user/sync-mails.service"
+    install -Dm644 "$srcdir/sync-mails.timer" "$pkgdir/etc/systemd/user/sync-mails.timer"
 }

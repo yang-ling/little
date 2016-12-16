@@ -3,8 +3,8 @@
 DELETED_TAG_THRESHOLD=7
 SPAM_TAG_THRESHOLD=30
 
-export XDG_CONFIG_HOME=$HOME/.config
-export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch/notmuch-config
+source /usr/local/lib/my-notmuch-utils/commons.sh
+
 function delete-mails-with-deleted-tag {
     for oneMail in $(notmuch search --format=text --output=files tag:deleted); do
         mail_age=$(perl -e 'print int -M $ARGV[0]' "$oneMail")
@@ -29,6 +29,11 @@ function delete-mails-with-spam-tag {
     done
 }
 
+lock_notmuch 30
+[[ $? -eq 0 ]] || { exit 1; }
+
 delete-mails-with-deleted-tag
 delete-mails-with-spam-tag
 notmuch new
+
+unlock_notmuch

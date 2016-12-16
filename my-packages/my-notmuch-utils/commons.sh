@@ -10,22 +10,13 @@ function sendWarning {
 }
 
 function lock_notmuch {
-    wait_time=$1
-    retry_count=$2
-    lock_success=0
-    while [[ $lock_success -eq 0 ]] && [[ retry_count -gt 0 ]]; do
-        echo "Check lockfile $NOTMUCH_LOCKFILE"
-        dotlockfile -r 10 -l -p "$NOTMUCH_LOCKFILE"
-        if [[ $? -eq 0 ]]; then
-            lock_success=1
-        else
-            lock_success=0
-            retry_count=$(( retry_count-1 ))
-            sleep $wait_time
-        fi
-    done
-
-    [[ $lock_success -eq 0 ]] && { sendWarning "My Notmuch Locker" "Notmuch is in use!"; return 1; }
+    retry_count=${1:-10}
+    echo "Check lockfile $NOTMUCH_LOCKFILE"
+    dotlockfile -r $retry_count -l -p "$NOTMUCH_LOCKFILE"
+    if [[ $? -ne 0 ]]; then
+        sendWarning "My Notmuch Locker" "Notmuch is in use!"
+        return 1
+    fi
     echo "Lockfile check OK!"
     return 0
 }

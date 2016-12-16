@@ -52,9 +52,13 @@ main() {
         echo "Finish offlineimap!"
 
         echo "Start notmuch new!"
-        notmuch new
-        [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Notmuch throws error!"; check_retry; }
-        echo "Finish notmuch new!"
+        lock_notmuch 1
+        if [[ $? -eq 0 ]]; then
+            notmuch new
+            [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Notmuch throws error!"; check_retry; }
+            echo "Finish notmuch new!"
+        fi
+        unlock_notmuch
 
         echo "Unlock lockfile!"
         dotlockfile -u "$LOCKFILE"

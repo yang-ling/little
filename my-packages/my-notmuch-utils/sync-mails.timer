@@ -1,0 +1,9 @@
+[Unit]
+Description=Synchronize mails Timer. 5m
+
+[Timer]
+OnStartupSec=10m
+OnUnitActiveSec=5m
+
+[Install]
+WantedBy=timers.target
