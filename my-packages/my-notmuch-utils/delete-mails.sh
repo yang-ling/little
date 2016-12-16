@@ -6,8 +6,8 @@ SPAM_TAG_THRESHOLD=30
 source /usr/local/lib/my-notmuch-utils/commons.sh
 
 function delete-mails-with-deleted-tag {
-    for oneMail in $(notmuch search --format=text --output=files tag:deleted); do
-        mail_age=$(perl -e 'print int -M $ARGV[0]' "$oneMail")
+    for oneMail in $($notmuch_command search --format=text --output=files tag:deleted); do
+        mail_age=$($perl_command -e 'print int -M $ARGV[0]' "$oneMail")
         if [[ "$mail_age" -gt "$DELETED_TAG_THRESHOLD" ]]; then
             echo "$oneMail has deleted tag and its age is $mail_age and threshold is $DELETED_TAG_THRESHOLD days. Delete it!"
             rm -f "$oneMail"
@@ -18,8 +18,8 @@ function delete-mails-with-deleted-tag {
 }
 
 function delete-mails-with-spam-tag {
-    for oneMail in $(notmuch search --format=text --output=files tag:spam); do
-        mail_age=$(perl -e 'print int -M $ARGV[0]' "$oneMail")
+    for oneMail in $($notmuch_command search --format=text --output=files tag:spam); do
+        mail_age=$($perl_command -e 'print int -M $ARGV[0]' "$oneMail")
         if [[ "$mail_age" -gt "$SPAM_TAG_THRESHOLD" ]]; then
             echo "$oneMail has spam tag and its age is $mail_age and threshold is $SPAM_TAG_THRESHOLD days. Delete it!"
             rm -f "$oneMail"
@@ -34,6 +34,6 @@ lock_notmuch 30
 
 delete-mails-with-deleted-tag
 delete-mails-with-spam-tag
-notmuch new
+$notmuch_command new
 
 unlock_notmuch

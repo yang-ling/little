@@ -25,7 +25,7 @@ check_retry() {
 
 main() {
     echo "Start Sync Mails!"
-    notify-send "Start Sync Mails!"
+    $notify_send_command "Start Sync Mails!"
 
     while true ; do
         round=$(( round+1 ))
@@ -36,32 +36,32 @@ main() {
         echo "Sleep finished!"
 
         echo "Check lockfile $LOCKFILE"
-        dotlockfile -r 10 -l -p "$LOCKFILE"
+        $dotlockfile_command -r 10 -l -p "$LOCKFILE"
 
         [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Previous sync lasts too long!"; check_retry;}
         echo "Lockfile check OK!"
 
         echo "Start mbsync!"
-        mbsync -c ~/.config/isync/mbsyncrc -a
+        $mbsync_command -c ~/.config/isync/mbsyncrc -a
         [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "mbsync throws error!"; check_retry; }
         echo "Finish mbsync!"
 
         echo "Start offlineimap!"
-        offlineimap -c ~/.config/offlineimap/offlineimap.conf
+        $offlineimap_command -c ~/.config/offlineimap/offlineimap.conf
         [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "offlineimap throws error!"; check_retry; }
         echo "Finish offlineimap!"
 
         echo "Start notmuch new!"
         lock_notmuch 1
         if [[ $? -eq 0 ]]; then
-            notmuch new
+            $notmuch_command new
             [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "Notmuch throws error!"; check_retry; }
             echo "Finish notmuch new!"
         fi
         unlock_notmuch
 
         echo "Unlock lockfile!"
-        dotlockfile -u "$LOCKFILE"
+        $dotlockfile_command -u "$LOCKFILE"
         echo "Unlock lockfile finished!"
     done
 }
