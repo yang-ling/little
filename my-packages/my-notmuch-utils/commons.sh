@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 export XDG_CONFIG_HOME=$HOME/.config
 export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch/notmuch-config
-export PATH= /usr/local/sbin:/usr/local/bin:/usr/bin:/usr/local/bin
 NOTMUCH_LOCKFILE=/tmp/notmuch-lockfile
 
-notmuch_command=$(which notmuch)
-dotlockfile_command=$(which dotlockfile)
-notify_send_command=$(which notify-send)
-perl_command=$(which perl)
-mbsync_command=$(which mbsync)
-offlineimap_command=$(which offlineimap)
+notmuch_command=/usr/bin/notmuch
+dotlockfile_command= /usr/bin/dotlockfile
+notify_send_command=/usr/bin/notify-send
+perl_command=/usr/bin/perl
+mbsync_command=/usr/bin/mbsync
+offlineimap_command=/usr/bin/offlineimap
 
 function sendWarning {
     echo "$2"
