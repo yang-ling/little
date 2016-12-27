@@ -2,6 +2,7 @@
 export XDG_CONFIG_HOME=$HOME/.config
 export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch/notmuch-config
 export GNUPGHOME=$XDG_CONFIG_HOME/gnupg
+export MAIL_ROOT="$HOME/Mails"
 
 NOTMUCH_LOCKFILE=/tmp/notmuch-lockfile
 
