@@ -23,7 +23,6 @@ $offlineimap_command -c ~/.config/offlineimap/offlineimap.conf
 echo "Finish offlineimap!"
 
 echo "Start notmuch new!"
-$notify_send_command "Start notmuch new!"
 lock_notmuch 1
 if [[ $? -eq 0 ]]; then
     $notmuch_command new
@@ -34,7 +33,6 @@ else
 fi
 unlock_notmuch
 echo "Finish notmuch new!"
-$notify_send_command "Finish notmuch new!"
 
 echo "Unlock lockfile!"
 $dotlockfile_command -u "$LOCKFILE"
