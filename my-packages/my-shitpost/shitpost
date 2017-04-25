@@ -1,0 +1,149 @@
+#!/bin/bash
+
+#someone on /r/linuxmasterrace asked what image programs were good for shitposts
+#it got me thinking that there should be a cli command just for that
+#days later (I'm still pretty noob)...
+
+#SHITPOST
+#Takes an image and adds some shitty text to it
+
+#   DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#       Version 2, December 2004
+#Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+#Everyone is permitted to copy and distribute verbatim or modified
+#copies of this license document, and changing it is allowed as long
+#as the name is changed.
+#   DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND  MODIFICATION
+# 0. You just DO WHAT THE FUCK YOU WANT TO.
+
+#Originally by Mykal Anderson
+
+# Patched by Declan Hoare 2016-12-02: use PNG instead of GIF for temp files to preserve quality
+
+#Begin
+
+#Check if imagemagick (just convert checked, but others used) is installed and exit if missing
+
+command -v convert >/dev/null 2>&1 || { echo >&2 "I require ImageMagick but it's not installed.  Aborting."; exit 1; }
+
+#Get CLI args
+
+top_text=" "
+top_font="Impact"
+bottom_text=" "
+bottom_font="Impact"
+image_file=""
+
+usage="$(basename "$0") [options]
+options:
+    -h|--help                           Show this help text
+    -t|--top                            Top Text
+    --top-font                          Font for Top Text. Default is Impact
+    -b|--bottom                         Bottom Text
+    --bottom-font                       Font for Bottom Text. Default is Impact
+    --font                              Font for both Top Text and Bottom Text. This value will be overwritten if top-font or bottom-font is set later.
+    -f|--file                           Image File Path. It is mandatory.
+"
+
+options=$(getopt -o h?t:b:f: --long "help,top:,bottom:,file:,top-font:,bottom-font:,font:" -- "$@")
+[ $? -eq 0 ] || {
+    echo "Incorrect options provided"
+    echo "$usage"
+    exit 1
+}
+
+eval set -- "$options"
+
+while test $# -gt 0; do
+  case "$1" in
+      -t|--top)
+          top_text=$2
+          shift 2
+          ;;
+      --top-font)
+          top_font=$2
+          shift 2
+          ;;
+      -b|--bottom)
+          bottom_text=$2
+          shift 2
+          ;;
+      --bottom-font)
+          bottom_font=$2
+          shift 2
+          ;;
+      --font)
+          top_font=$2
+          bottom_font=$2
+          shift 2
+          ;;
+      -f|--file)
+          image_file=$2
+          shift 2
+          ;;
+      -h|--help)
+          echo "$usage"
+          exit 0
+          ;;
+      --)
+          # In this case branch, the $2 may be empty and parameter could be only one, which means only `--'
+          # If so and if we do shift 2, the $# will always be 1, thus cause infinite loop.
+          # So we need check parameter number here and do proper shift.
+          # In other case branches, the $2 will never be empty because we use `getopt' and it can check it for us.
+          # So we needn't do such check in other case branches.
+          if [[ $# -eq 1 ]]; then
+              shift 1
+          else
+              shift 2;
+          fi
+          ;;
+      *)
+          # In most cases, `getopt' will check incorrect options for us, but if
+          # incorrect options appears after `--', `getopt' cannot detect that,
+          # so we need this case branch to catch such error.
+          # For example: print.sh -- filename.pdf -z
+          # -z is an incorrect option but `getopt' cannot detect it.
+          echo "Incorrect options provided: $1"
+          echo "$usage"
+          exit 1
+          ;;
+  esac
+done
+
+#Make sure an image file was set and that it exists, or, what are we doing here, really. (Does not successfully check when source is a URL that fails to load, https for example) Would like to confirm it's an image file convert will take too but...
+if [ -z "$image_file" ]
+    then echo "You must specify an image file. Use -h or --help for help."; exit 1
+fi
+
+#Get some info on the file path etc
+path=${image_file%/*}
+base=${image_file##*/}
+fext=${base##*.}
+pref=${base%.*}
+
+#Upscale the image if it's too shitty. This is required to make the text readable as it's generated to fit the pixels of the original
+convert -resize 1024x1024\< "$image_file" shitpost-temp-resize.png
+
+#Get the height and width of the image to use later to size the overlays. Clipped height keeps things locked in the top and bottom fifth of the image.
+image_width=`identify -format "%[width]" shitpost-temp-resize.png`
+image_height=`identify -format "%[height]" shitpost-temp-resize.png`
+clipped_height=$(($image_height/5))
+stroke_width=$(($clipped_height/40))
+
+convert -background none -fill white -stroke black -strokewidth "$stroke_width" -size "$image_width"x"$clipped_height" -gravity Center -font "$top_font" caption:"$top_text" temp-top-text.png
+convert -background none -fill white -stroke black -strokewidth "$stroke_width" -size "$image_width"x"$clipped_height" -gravity Center -font "$bottom_font" caption:"$bottom_text" temp-bottom-text.png
+composite -gravity north temp-top-text.png shitpost-temp-resize.png shitpost-temp-composite.png
+composite -gravity south temp-bottom-text.png shitpost-temp-composite.png shitpost-"$pref"."$fext"
+
+#Clean up
+rm temp-top-text.png
+rm temp-bottom-text.png
+rm shitpost-temp-resize.png
+rm shitpost-temp-composite.png
+
+#Announce the results
+echo "Created file "$PWD"/shitpost-"$pref"."$fext""
+
+exit 0
+#End

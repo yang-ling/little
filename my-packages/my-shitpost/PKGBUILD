@@ -1,0 +1,19 @@
+# Maintainer: YANG Ling
+# Originally by Mykal Anderson, Baudouin Roullier <DISGUISE baudouin dot roullier at gmail dot com DISGUISE>
+_appname_=shitpost
+pkgname=('my-shitpost')
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="A tool to create memes using CLI"
+arch=('i686' 'x86_64')
+license=('unknown')
+url="https://redd.it/5ezk1f"
+depends=('imagemagick' 'ttf-ms-fonts')
+conflicts=("${_appname_}")
+provides=("${_appname_}")
+source=("shitpost")
+sha256sums=('605f050eb3d9de344f4ccee0089424ecf55c164c34ad0d7fd7517ecd7ff15dd8')
+
+package() {
+    install -D -m755 "$srcdir/shitpost" "${pkgdir}/usr/local/bin/shitpost"
+}
