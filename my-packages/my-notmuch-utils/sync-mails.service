@@ -8,3 +8,4 @@ Type=oneshot
 ExecStart=/usr/local/bin/sync-mails.sh
 IOSchedulingClass=idle
 IOSchedulingPriority=7
+TimeoutSec=1h
