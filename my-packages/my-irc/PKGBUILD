@@ -1,0 +1,24 @@
+# Maintainer: YANG Ling <yangling1984@gmail.com>
+pkgname=my-irc
+pkgver=1.0.5
+pkgrel=1
+pkgdesc="My IRC"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'perl')
+arch=('any')
+source=('qq.pl'
+        'run-qq-local.sh'
+        'qq-irc.service'
+       )
+md5sums=('7a7544acafb898b581c0eb1b0af3da39'
+         'c91ca4c8db84d665263101f30c9b3132'
+         '73f39344dd9a6ed9b02f60578c9b5b07')
+
+
+package() {
+    install -Dm644 "$srcdir/qq-irc.service" "$pkgdir/etc/systemd/user/qq-irc.service"
+    install -Dm755 "$srcdir/qq.pl" "$pkgdir/usr/local/bin/qq.pl"
+    install -Dm755 "$srcdir/run-qq-local.sh" "$pkgdir/usr/local/bin/run-qq-local.sh"
+}
