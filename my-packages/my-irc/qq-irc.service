@@ -2,9 +2,13 @@
 Description=Delete notmuch deleted and spam mails Service
 AssertFileIsExecutable=/usr/local/bin/qq.pl
 AssertFileIsExecutable=/usr/local/bin/run-qq-local.sh
+After=network.target
 
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/run-qq-local.sh
 IOSchedulingClass=idle
 IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target
