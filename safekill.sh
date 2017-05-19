@@ -115,6 +115,8 @@ safe_end_procs() {
         elif [[ "$pane_proc" == "python" ]]; then
             # This is for ranger
             cmd='"q"'
+        elif [[ "$pane_proc" == "weechat" ]]; then
+            cmd='C-u "/quit" Enter'
         fi
         echo $cmd | xargs tmux send-keys -t "$pane_id"
         echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}, session name=${session_name}"
