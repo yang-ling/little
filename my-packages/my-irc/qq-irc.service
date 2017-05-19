@@ -1,5 +1,5 @@
 [Unit]
-Description=Delete notmuch deleted and spam mails Service
+Description=QQ as IRC Service
 AssertFileIsExecutable=/usr/local/bin/qq.pl
 AssertFileIsExecutable=/usr/local/bin/run-qq-local.sh
 After=network.target
