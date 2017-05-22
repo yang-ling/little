@@ -117,6 +117,8 @@ safe_end_procs() {
             cmd='"q"'
         elif [[ "$pane_proc" == "weechat" ]]; then
             cmd='C-u "/quit" Enter'
+        elif [[ "$pane_proc" == "telnet" ]]; then
+            cmd='C-u "quit" Enter'
         fi
         echo $cmd | xargs tmux send-keys -t "$pane_id"
         echoInfo "Kill a pane, id=${pane_id}, proc=${pane_proc}, session name=${session_name}"
