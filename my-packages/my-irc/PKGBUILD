@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-irc
-pkgver=1.0.10
+pkgver=1.0.11
 pkgrel=1
 pkgdesc="My IRC"
 url="https://github.com/yang-ling/little"
@@ -14,7 +14,7 @@ source=('qq.pl'
        )
 md5sums=('7a7544acafb898b581c0eb1b0af3da39'
          'c29df65e0b8b87c54c85b5ef596ee0e3'
-         '950707233539e8903a0d7ff194654f5a')
+         '4a260b65f2089066c7b14af9aaea08ed')
 
 
 package() {
