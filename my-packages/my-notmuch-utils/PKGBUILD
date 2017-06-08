@@ -1,12 +1,12 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-notmuch-utils
 pkgver=1.0.16
-pkgrel=1
+pkgrel=2
 pkgdesc="A notmuch helper."
 url="https://github.com/yang-ling/little"
 license=('GPL')
 groups=()
-depends=('bash' 'perl' 'notmuch' 'msmtp' 'isync' 'offlineimap-git')
+depends=('bash' 'perl' 'notmuch' 'msmtp' 'isync' 'offlineimap')
 arch=('any')
 source=('delete-mails.sh'
         'my-send-mail.sh'
