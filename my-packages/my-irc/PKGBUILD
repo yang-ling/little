@@ -1,9 +1,9 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=my-irc
 pkgver=1.0.11
-pkgrel=1
+pkgrel=2
 pkgdesc="My IRC"
-url="https://github.com/yang-ling/little"
+url="https://github.com/sjdy521/Mojo-Webqq"
 license=('GPL')
 groups=()
 depends=('bash' 'perl' 'cpanminus')
