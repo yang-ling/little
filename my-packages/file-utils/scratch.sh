@@ -2,12 +2,14 @@
 usage="$(basename "$0") [options]
 
 options:
-    -m|--mail                           Set scratch type to mail
+    -m|--markdown                       Set scratch type to markdown
+    -t|--text                           Set scratch type to txt
     -h|--help                           show this help text"
 
 SCRATCH_MARKDOWN_EXTENSION=".md"
 SCRATCH_MAIL_EXTENSION=".eml"
-scratch_extension="$SCRATCH_MARKDOWN_EXTENSION"
+SCRATCH_TEXT_EXTENSION=".txt"
+scratch_extension="$SCRATCH_MAIL_EXTENSION"
 options=$(getopt -o hm --long "help,mail" -- "$@")
 
 [ $? -eq 0 ] || {
@@ -20,8 +22,12 @@ eval set -- "$options"
 
 while test $# -gt 0; do
   case "$1" in
-      -m|--mail)
-          scratch_extension="$SCRATCH_MAIL_EXTENSION"
+      -m|--markdown)
+          scratch_extension="$SCRATCH_MARKDOWN_EXTENSION"
+          shift 1
+          ;;
+      -t|--text)
+          scratch_extension="$SCRATCH_TEXT_EXTENSION"
           shift 1
           ;;
       -h|--help)
