@@ -1,5 +1,5 @@
 pkgname=file-utils
-pkgver=1.2.9
+pkgver=1.2.10
 pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
@@ -18,7 +18,7 @@ md5sums=('cfa82282f0f848890545b7e0c5a97263'
          '29e4ec368012a0253528785cdeb62f83'
          '2e2e847e1ceb327f7f425cba197c7032'
          'ce9bca35e6c9b74d2f868dd47c4ea216'
-         '43c06a91474adaa449008ab914607052')
+         'ca7e27550c5785b49033d1e69d987685')
 
 
 package() {

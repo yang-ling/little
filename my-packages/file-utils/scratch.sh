@@ -10,7 +10,7 @@ SCRATCH_MARKDOWN_EXTENSION=".md"
 SCRATCH_MAIL_EXTENSION=".eml"
 SCRATCH_TEXT_EXTENSION=".txt"
 scratch_extension="$SCRATCH_MAIL_EXTENSION"
-options=$(getopt -o hm --long "help,mail" -- "$@")
+options=$(getopt -o hmt --long "help,mail,text" -- "$@")
 
 [ $? -eq 0 ] || {
     echo "Incorrect options provided"
