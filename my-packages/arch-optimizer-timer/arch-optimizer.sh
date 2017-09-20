@@ -17,4 +17,4 @@ while [ $isClean -ne 0 ] ; do
 done
 
 # Keep one generation for each package and remove all uninstalled package cache.
-/usr/bin/paccache -rk2 -v && /usr/bin/paccache -ruk0 -v && pacman-optimize && sync
+/usr/bin/paccache -rk1 -v && /usr/bin/paccache -ruk0 -v && pacman-optimize && sync
