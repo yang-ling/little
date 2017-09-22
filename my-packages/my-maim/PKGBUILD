@@ -1,0 +1,15 @@
+pkgname=my-maim
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My Maim Utils"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'maim' 'imagemagick' 'xclip')
+arch=('any')
+source=('my-maim.sh')
+md5sums=('a94eb9734a4b2c8bb0c7382deae0e7d2')
+
+package() {
+    install -Dm755 "$srcdir/my-maim.sh" "$pkgdir/usr/local/bin/mm"
+}
