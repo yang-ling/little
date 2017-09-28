@@ -1,0 +1,15 @@
+pkgname=my-i3-goto-urgent
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My Goto Urgent Workspace for i3wm"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'i3-wm')
+arch=('any')
+source=('goto-urgent.sh')
+md5sums=('60533fbfb5138702fb95077b0ccb4951')
+
+package() {
+    install -Dm755 "$srcdir/goto-urgent.sh" "$pkgdir/usr/local/bin/goto-urgent"
+}
