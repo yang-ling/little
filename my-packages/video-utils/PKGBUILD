@@ -1,5 +1,5 @@
 pkgname=video-utils
-pkgver=1.2.4
+pkgver=1.2.5
 pkgrel=1
 pkgdesc="Video Utils"
 url="https://github.com/yang-ling/little"
@@ -11,13 +11,15 @@ source=('myff2pass.sh'
         'myffconv.sh'
         'myffconcat.sh'
         'myffsplit.sh'
-        'create-captures.sh')
+        'create-captures.sh'
+        'video2dvd.sh')
 
 md5sums=('effeeceff801614b0cb85a199a8c70b3'
          '435e023f1a28b6cc5c571a0327b47be3'
          'dde7b585ddce41cdbd2a054a6ccb312b'
          'ac87e678dbd8e0812d431cc605d75bc3'
-         '1a3ffc6a6438844517085779e81c0c86')
+         '1a3ffc6a6438844517085779e81c0c86'
+         '6dd08fa06de92ca2bd8ba5e41d8f4b09')
 
 package() {
     install -Dm755 "$srcdir/myff2pass.sh" "$pkgdir/usr/local/bin/myff2pass.sh"
@@ -25,4 +27,5 @@ package() {
     install -Dm755 "$srcdir/myffconcat.sh" "$pkgdir/usr/local/bin/myffconcat.sh"
     install -Dm755 "$srcdir/myffsplit.sh" "$pkgdir/usr/local/bin/myffsplit.sh"
     install -Dm755 "$srcdir/create-captures.sh" "$pkgdir/usr/local/bin/create-captures.sh"
+    install -Dm755 "$srcdir/video2dvd.sh" "$pkgdir/usr/local/bin/video2dvd.sh"
 }
