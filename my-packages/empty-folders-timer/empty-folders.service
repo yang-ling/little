@@ -5,6 +5,6 @@ AssertFileNotEmpty=%h/.empty-foldersrc
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/empty-folders %h/.empty-foldersrc
+ExecStart=/usr/bin/empty-folders %h/.myconfig/empty-foldersrc
 IOSchedulingClass=idle
 IOSchedulingPriority=7

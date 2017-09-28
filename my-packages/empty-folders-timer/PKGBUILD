@@ -1,6 +1,6 @@
 # Maintainer: YANG Ling <yangling1984@gmail.com>
 pkgname=empty-folders-timer
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="Empty Folders Timer. Daily"
 url="https://github.com/yang-ling/little"
@@ -12,7 +12,7 @@ source=('empty-folders.service'
         'empty-folders.timer'
         'empty-folders.sh')
 
-md5sums=('730a0533a23af22c3ce2b4e949129d4c'
+md5sums=('128dfc5a390f326219774617b9f424c5'
          'd1717195248723b464c4095eeac1d51e'
          '334112034933b14b7eda164019d740d8')
 
