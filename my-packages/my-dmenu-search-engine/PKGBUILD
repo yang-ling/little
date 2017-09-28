@@ -1,0 +1,15 @@
+pkgname=my-dmenu-search-engine
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My DMenu Search Engine"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'rofi')
+arch=('any')
+source=('dmenu-search-engine.sh')
+md5sums=('12322f07cf272cab5d77850d7c3de477')
+
+package() {
+    install -Dm755 "$srcdir/dmenu-search-engine.sh" "$pkgdir/usr/local/bin/dmenu-search-engine"
+}
