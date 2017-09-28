@@ -1,5 +1,5 @@
 pkgname=file-utils
-pkgver=1.2.10
+pkgver=1.2.11
 pkgrel=1
 pkgdesc="File Utils"
 url="https://github.com/yang-ling/little"
@@ -12,13 +12,15 @@ source=('rename-file-by-time.sh'
         'delete-empty-dir.sh'
         'fast-delete-dir.sh'
         'xo.sh'
-        'scratch.sh')
+        'scratch.sh'
+        'unzip.py')
 md5sums=('cfa82282f0f848890545b7e0c5a97263'
          '8a407a81090ca159e336187c93038737'
          '29e4ec368012a0253528785cdeb62f83'
          '2e2e847e1ceb327f7f425cba197c7032'
          'ce9bca35e6c9b74d2f868dd47c4ea216'
-         'ca7e27550c5785b49033d1e69d987685')
+         'ca7e27550c5785b49033d1e69d987685'
+         '3f7cf192f45746e24cacbe2a868e8251')
 
 
 package() {
@@ -28,4 +30,5 @@ package() {
     install -Dm755 "$srcdir/fast-delete-dir.sh" "$pkgdir/usr/local/bin/fast-delete-dir.sh"
     install -Dm755 "$srcdir/xo.sh" "$pkgdir/usr/local/bin/xo"
     install -Dm755 "$srcdir/scratch.sh" "$pkgdir/usr/local/bin/scratch"
+    install -Dm755 "$srcdir/unzip.py" "$pkgdir/usr/local/bin/my-unzip"
 }
