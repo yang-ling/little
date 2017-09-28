@@ -1,0 +1,15 @@
+pkgname=my-ssh-helper
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My SSH Helper"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'openssh')
+arch=('any')
+source=('single-ssh-agent.sh')
+md5sums=('75b74532b815741355e742b260a3eb47')
+
+package() {
+    install -Dm755 "$srcdir/single-ssh-agent.sh" "$pkgdir/usr/local/bin/single-ssh-agent"
+}
