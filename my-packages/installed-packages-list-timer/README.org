@@ -1,0 +1,21 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t
+#+OPTIONS: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+TITLE: README installed-packages-list-timer
+#+DATE: <2017-09-28 Thu>
+#+AUTHOR: Yang Ling
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.3.1 (Org mode 9.0.9)
+
+* Description
+  - List what packages installed
+* Configuration
+** Configuration file
+   - =/home/yangling/.myconfig/list-installed-packages=
+** Sample
+  #+BEGIN_QUOTE
+  /home/yangling/Dropbox/Work/installed-packages,work
+  #+END_QUOTE
