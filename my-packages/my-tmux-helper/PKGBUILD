@@ -1,0 +1,15 @@
+pkgname=my-tmux-helper
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My Tmux helper"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'tmux')
+arch=('any')
+source=('safekill.sh')
+md5sums=('8375faaf10508616daf32d9a615a9564')
+
+package() {
+    install -Dm755 "$srcdir/safekill.sh" "$pkgdir/usr/local/bin/muxkill"
+}
