@@ -1,0 +1,15 @@
+pkgname=my-image-utils
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="My Image Utilities"
+url="https://github.com/yang-ling/little"
+license=('GPL')
+groups=()
+depends=('bash' 'feh')
+arch=('any')
+source=('image-browser.sh')
+md5sums=('a8967ef37bcbd93ac3a5fc3c965e7bef')
+
+package() {
+    install -Dm755 "$srcdir/image-browser.sh" "$pkgdir/usr/local/bin/image-browser"
+}
