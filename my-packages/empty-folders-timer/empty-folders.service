@@ -1,7 +1,7 @@
 [Unit]
 Description=Empty Given Folders Service
 AssertFileIsExecutable=/usr/bin/empty-folders
-AssertFileNotEmpty=%h/.empty-foldersrc
+AssertFileNotEmpty=%h/.myconfig/empty-foldersrc
 
 [Service]
 Type=oneshot
