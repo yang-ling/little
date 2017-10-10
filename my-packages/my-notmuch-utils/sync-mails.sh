@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 source /usr/local/lib/my-notmuch-utils/commons.sh
 
@@ -48,7 +50,7 @@ do
         mailbox="${mailbox##*/}"
         account="${account##*/}"
         [[ -n "$(ls $oneFolder)" ]] && \
-            $notify_send_command "New Mail(s) in $account/$mailbox " "$message" -t 5000 &
+            $notify_send_command "New Mail(s) in $account/$mailbox " -t 5000
     fi
 done < <(find "$MAIL_ROOT" -type d -path "$MAIL_ROOT/.notmuch" -prune -o -type d -print0)
 
