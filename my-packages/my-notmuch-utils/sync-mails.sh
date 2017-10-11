@@ -20,7 +20,9 @@ $mbsync_command -c ~/.config/isync/mbsyncrc -a
 echo "Finish mbsync!"
 
 echo "Start offlineimap!"
+set +e
 $offlineimap_command -c ~/.config/offlineimap/offlineimap.conf
+set -e
 [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "offlineimap throws error!"; }
 echo "Finish offlineimap!"
 
