@@ -15,8 +15,10 @@ $dotlockfile_command -r 10 -l -p "$LOCKFILE"
 echo "Lockfile check OK!"
 
 echo "Start mbsync!"
+set +e
 $mbsync_command -c ~/.config/isync/mbsyncrc -a
 [[ $? -ne 0 ]] && { sendWarning "Sync Mail" "mbsync throws error!"; }
+set -e
 echo "Finish mbsync!"
 
 echo "Start offlineimap!"
