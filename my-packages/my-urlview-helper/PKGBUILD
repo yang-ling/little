@@ -1,5 +1,5 @@
 pkgname=my-urlview-helper
-pkgver=1.0.0
+pkgver=1.0.7
 pkgrel=1
 pkgdesc="My URL View Helper"
 url="https://github.com/yang-ling/little"
@@ -8,7 +8,7 @@ groups=()
 depends=('bash' 'urlview')
 arch=('any')
 source=('my_url_handler.sh')
-md5sums=('222a9746a10a5813ba6812ed4c8cd641')
+md5sums=('d6eb3f745c489c80fc8a22b1e85c4021')
 
 package() {
     install -Dm755 "$srcdir/my_url_handler.sh" "$pkgdir/usr/local/bin/url_handler.sh"

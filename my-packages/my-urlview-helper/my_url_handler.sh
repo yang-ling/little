@@ -29,9 +29,12 @@
 # XT: Launch with an xterm if possible or as VT if not
 # VT: Launch in the same terminal
 
+/usr/bin/terminator -e "/usr/bin/w3m $1"
+exit 0
+
 # The lists of programs to be executed are
-https_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
-http_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
+https_prgs="/usr/bin/w3m:VT /usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
+http_prgs="/usr/bin/w3m:VT /usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stable:XW"
 mailto_prgs="/usr/bin/mutt:VT /usr/bin/elm:VT /usr/bin/pine:VT /usr/bin/mail:VT"
 gopher_prgs="/usr/bin/lynx:XT /usr/bin/gopher:XT"
 ftp_prgs="/usr/bin/lynx:XT /usr/bin/ncftp:XT"
@@ -42,7 +45,6 @@ gifv_prgs="/usr/bin/qutebrowser:XW /usr/bin/vimb:XW /usr/bin/google-chrome-stabl
 # Program used as an xterm (if it doesn't support -T you'll need to change
 # the command line in getprg)
 XTERM=/usr/bin/xterm
-
 
 ###########################################################################
 # Change bellow this at your own risk
