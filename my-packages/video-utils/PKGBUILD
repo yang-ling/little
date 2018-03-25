@@ -1,5 +1,5 @@
 pkgname=video-utils
-pkgver=1.2.5
+pkgver=1.2.7
 pkgrel=1
 pkgdesc="Video Utils"
 url="https://github.com/yang-ling/little"
@@ -15,7 +15,7 @@ source=('myff2pass.sh'
         'video2dvd.sh')
 
 md5sums=('effeeceff801614b0cb85a199a8c70b3'
-         '435e023f1a28b6cc5c571a0327b47be3'
+         '53f67dee975dce45a3e5abe6616b0ed4'
          'dde7b585ddce41cdbd2a054a6ccb312b'
          'ac87e678dbd8e0812d431cc605d75bc3'
          '1a3ffc6a6438844517085779e81c0c86'
